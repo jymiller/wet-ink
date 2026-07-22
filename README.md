@@ -2,13 +2,17 @@
   <img src="docs/social-preview.png" alt="Wet Ink — covenant monitoring &amp; legal notice. Not &quot;can the model read the PDF?&quot; — &quot;did the lender get legally noticed?&quot;" width="880">
 </p>
 
+<p align="center">
+  🏆 <strong>1st Place</strong> · <a href="https://luma.com/lastmilehackathon">Last Mile Agent Hackathon</a> · San Francisco · July 2026
+</p>
+
 # Wet Ink
 
 **After the deal is done and the ink is dry, the information is lost — until Wet Ink monitors loan compliance to term.**
 
 Covenant monitoring & legal notice for credit teams. Not *"can the model read the PDF?"* — *"did anyone catch the breach, and get the lender legally noticed?"*
 
-Built for the Last Mile Agent Hackathon (July 21, 2026, SF). Inspired by the work on [Enid](https://enidpa.com).
+🏆 **1st place** at the [Last Mile Agent Hackathon](https://luma.com/lastmilehackathon) — San Francisco, July 21, 2026. Inspired by the work on [Enid](https://enidpa.com).
 
 ![Wet Ink portfolio watch — 100 deals under covenant watch; breaches surfaced and flagged for the desk, with the priority deal escalated by phone in the cockpit](docs/fleet.png)
 
