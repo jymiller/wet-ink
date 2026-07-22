@@ -18,9 +18,9 @@ Keep this open on a second screen. `[DO]` = what to click. `[SAY]` = read it.
 
 **[DO]** Click **▶ SIMULATE SCAN**. Let the grid fill (green = clear, red = breach).
 
-**[SAY]** "It reads every cert as it arrives. Green clears; **red is a covenant breach**. And the second it finds one, it routes it to a human — on the right channel: a **phone call** for the priority deal, **SMS and WhatsApp** for the rest, all through **ActionLayer**." *(point at the Escalations rail on the right)*
+**[SAY]** "It reads every cert as it arrives. Green clears; **red is a covenant breach**. And the second it finds one, it flags it for the desk — the **priority deal escalates by phone** in the cockpit, and the rest wait for an officer to action." *(point at the breaches flagged on the right)*
 
-**[SAY]** "And it stays honest — see the labels: this scan is **SYNTHETIC** so we spend nothing, the messages are **PRERUN**."
+**[SAY]** "And it stays honest — see the labels: this scan is **SYNTHETIC** so we spend nothing, and nothing's been sent — the breaches are just flagged."
 
 ---
 
@@ -52,7 +52,7 @@ Keep this open on a second screen. `[DO]` = what to click. `[SAY]` = read it.
 ---
 
 ## Honesty one-liner (say it once, early)
-> "Borrowers fictional; the certs, OCR, math and phone call are real; the fax and the fleet messages are pre-run — and every panel is labeled REAL / PRERUN / SYNTHETIC."
+> "Borrowers fictional; the certs, OCR, math and phone call are real; the fax is pre-run — and every panel is labeled REAL / PRERUN / SYNTHETIC."
 
 ## If something breaks (rehearsed fallbacks, not apologies)
 - **Cockpit call slow / silent:** keep narrating the on-screen read; the labels and math carry it.

@@ -31,7 +31,7 @@ A bank signs a loan, the ink dries, and the loan officer moves on to the next de
 - **Holds the line on authority.** The agent can *flag* a breach, but a policy gate **denies** it the ability to serve formal notice. It holds the determination and escalates.
 - **Reaches a human.** The priority deal escalates with a phone call in the agent's own voice; every other breach is flagged for an officer to action.
 - **Serves the notice — after a signature.** Once a human attests, the same action runs under *their* identity and the formal notice goes out a real-world channel.
-- **Proves it.** Every action lands on a hash-chained audit trail, and every panel is labeled **REAL / PRERUN / SYNTHETIC**.
+- **Proves it.** Every action lands on an append-only audit trail, and every panel is labeled **REAL / PRERUN / SYNTHETIC**.
 
 ## The story, act by act
 
@@ -60,7 +60,7 @@ A bank signs a loan, the ink dries, and the loan officer moves on to the next de
 
 ![Cockpit at the gate — breach caught, serve_notice denied, real Novita TTS escalation call to the loan officer](docs/cockpit-gate.png)
 
-**The proof — after attestation, the notice is served.** The same action runs under the human's identity; the notice goes out as a real fax via ActionLayer, on a hash-chained audit trail.
+**The proof — after attestation, the notice is served.** The same action runs under the human's identity; the notice goes out as a real fax via ActionLayer, on an append-only audit trail.
 
 ![Cockpit proof panel — notice served, dashboard said 1.50× green vs. paper 1.33× breach](docs/cockpit-proof.png)
 
