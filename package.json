@@ -1,0 +1,12 @@
+{
+  "name": "cold-open",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "A self-directing agent that reads a hackathon's corpus and builds the submission — then stops and asks a human before it submits.",
+  "engines": { "node": ">=18" },
+  "scripts": {
+    "start": "node index.js",
+    "models": "node scripts/models.js"
+  }
+}

@@ -1,0 +1,459 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>WET INK — storyboard mockup</title>
+<style>
+  /* ===== tokens: lifted verbatim from public/cockpit.html so this drops in clean ===== */
+  :root {
+    --bg: #060a08; --panel: #0b120e; --panel-2: #0f1712; --hair: #1c2a22;
+    --phos: #35f39a; --phos-dim: #1f8f5e; --phos-mute: #146b45;
+    --alarm: #ff5c4d; --amber: #ffc76b; --ink: #d6efe2; --ink-dim: #6f8f80; --synth: #6cb8ff;
+    --wa: #4fe38a; /* whatsapp-ish green */
+    --mono: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+    --serif: ui-serif, "Iowan Old Style", Georgia, serif;
+    --paper: #d8cfba; --paper-ink: #221d15;
+  }
+  * { box-sizing: border-box; }
+  body { margin: 0; background: #060a08; color: var(--ink); font-family: var(--mono);
+    padding: 40px 20px 80px; display: flex; flex-direction: column; align-items: center; gap: 44px; }
+
+  .meta { width: min(1280px, 96vw); color: var(--ink-dim); font-size: 12px; letter-spacing: .04em;
+    display: flex; justify-content: space-between; align-items: baseline; border-bottom: 1px solid var(--hair); padding-bottom: 10px; }
+  .meta b { color: var(--amber); font-family: var(--serif); font-size: 16px; letter-spacing: .06em; }
+
+  /* a "frame" is a 16:9 stage that screenshots directly as a gallery still */
+  .frame { width: min(1280px, 96vw); aspect-ratio: 16 / 9; position: relative;
+    border: 1px solid var(--hair); border-radius: 10px; overflow: hidden; background: var(--bg);
+    box-shadow: 0 20px 60px rgba(0,0,0,.5); }
+  .cap { width: min(1280px, 96vw); margin-top: -32px; display: flex; gap: 12px; align-items: baseline; font-size: 12px; }
+  .cap .act { font-size: 10px; letter-spacing: .22em; color: var(--phos-dim); border: 1px solid var(--phos-mute);
+    border-radius: 999px; padding: 3px 10px; text-transform: uppercase; white-space: nowrap; }
+  .cap .txt { color: var(--ink-dim); letter-spacing: .03em; }
+  .cap .txt b { color: var(--ink); }
+
+  .scan::after { content: ""; position: absolute; inset: 0; pointer-events: none;
+    background: repeating-linear-gradient(0deg, rgba(0,0,0,.16) 0 1px, transparent 1px 3px); mix-blend-mode: multiply; }
+
+  /* honesty legend */
+  .legend { display: flex; gap: 8px; align-items: center; }
+  .lg { font-size: 10px; letter-spacing: .12em; padding: 2px 8px; border-radius: 999px; border: 1px solid; opacity: .45; }
+  .lg.on { opacity: 1; box-shadow: 0 0 8px currentColor; }
+  .lg.real { color: var(--phos); border-color: var(--phos-mute); }
+  .lg.prerun { color: var(--amber); border-color: #6b5310; }
+  .lg.synth { color: var(--synth); border-color: #2b5580; }
+
+  /* ============ ACT 1 — TITLE CARD ============ */
+  .a1 { display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100%; text-align: center;
+    background: radial-gradient(120% 90% at 50% 0%, rgba(255,199,107,.06), transparent 55%), var(--bg); padding: 0 8%; }
+  .a1 .lane { font-size: 11px; letter-spacing: .28em; text-transform: uppercase; color: var(--phos-dim); }
+  .a1 .premise { font-family: var(--serif); font-size: clamp(15px, 1.9vw, 21px); color: var(--ink-dim); margin-top: 14px; line-height: 1.5; max-width: 40ch; }
+  .a1 .premise b { color: var(--ink); font-style: normal; }
+  .a1 .wm { font-family: var(--serif); font-weight: 600; color: var(--amber); letter-spacing: .06em;
+    font-size: clamp(46px, 8.4vw, 108px); line-height: .95; margin: 18px 0 4px; text-shadow: 0 0 44px rgba(255,199,107,.28); }
+  .a1 .rule { width: 120px; height: 1px; background: var(--phos-mute); margin: 16px 0 20px; }
+  .a1 .q { font-family: var(--serif); font-size: clamp(18px, 2.3vw, 27px); color: var(--ink); line-height: 1.5; max-width: 30ch; }
+  .a1 .q i { color: var(--ink-dim); font-style: italic; }
+  .a1 .q b { color: var(--phos); font-weight: 600; }
+  .a1 .legend { position: absolute; top: 22px; right: 26px; }
+  .a1 .who { position: absolute; bottom: 22px; left: 0; right: 0; font-size: 11px; letter-spacing: .16em; color: var(--ink-dim); text-transform: uppercase; }
+
+  /* ============ shared chrome ============ */
+  .stage { position: absolute; inset: 0; display: flex; flex-direction: column; }
+  .top { display: flex; align-items: center; justify-content: space-between; padding: 11px 20px;
+    border-bottom: 1px solid var(--hair); background: var(--panel); flex: none; }
+  .top .brand { display: flex; align-items: baseline; gap: 12px; }
+  .top .brand b { font-family: var(--serif); font-size: 19px; color: var(--amber); letter-spacing: .5px; }
+  .top .brand span { font-size: 10.5px; letter-spacing: .18em; text-transform: uppercase; color: var(--ink-dim); }
+  .top .rt { display: flex; align-items: center; gap: 14px; }
+  .poll { font-size: 10px; letter-spacing: .1em; text-transform: uppercase; color: var(--ink-dim); display: flex; align-items: center; gap: 6px; }
+  .poll .d { width: 7px; height: 7px; border-radius: 50%; background: var(--phos); box-shadow: 0 0 8px var(--phos); }
+
+  .score { display: grid; gap: 1px; background: var(--hair); border-bottom: 1px solid var(--hair); flex: none; }
+  .kpi { background: var(--panel); padding: 8px 16px; }
+  .kpi .n { font-size: 20px; font-weight: 700; color: var(--ink); font-variant-numeric: tabular-nums; line-height: 1.1; }
+  .kpi .n.breach { color: var(--alarm); } .kpi .n.good { color: var(--phos); } .kpi .n.watch { color: var(--amber); }
+  .kpi .c { font-size: 9px; letter-spacing: .1em; text-transform: uppercase; color: var(--ink-dim); margin-top: 3px; }
+
+  /* ============ ACT 2 — MONITORING DASHBOARD ============ */
+  .dash { position: absolute; inset: 0; display: flex; flex-direction: column; }
+  .dash .score { grid-template-columns: repeat(6, 1fr); }
+  .dash .body { display: grid; grid-template-columns: 1fr 372px; flex: 1; min-height: 0; }
+  .board { padding: 14px 18px; overflow: hidden; display: flex; flex-direction: column; }
+  .board .lab { font-size: 10px; letter-spacing: .16em; text-transform: uppercase; color: var(--ink-dim); margin-bottom: 10px; display: flex; justify-content: space-between; }
+  table.deals { width: 100%; border-collapse: collapse; font-size: 12px; }
+  table.deals th { text-align: left; font-weight: 400; font-size: 9px; letter-spacing: .12em; text-transform: uppercase;
+    color: var(--ink-dim); padding: 0 8px 8px; border-bottom: 1px solid var(--hair); }
+  table.deals th.r, table.deals td.r { text-align: right; }
+  table.deals td { padding: 7px 8px; border-bottom: 1px solid rgba(28,42,34,.5); color: var(--ink); }
+  table.deals td .b { color: var(--ink-dim); }
+  .st { display: inline-flex; align-items: center; gap: 7px; font-size: 10px; letter-spacing: .06em; }
+  .st .dot { width: 8px; height: 8px; border-radius: 50%; flex: none; }
+  .st.clear { color: var(--phos-dim); } .st.clear .dot { background: var(--phos); box-shadow: 0 0 7px var(--phos); }
+  .st.watch { color: var(--amber); } .st.watch .dot { background: var(--amber); box-shadow: 0 0 7px var(--amber); }
+  .st.breach { color: var(--alarm); font-weight: 700; } .st.breach .dot { background: var(--alarm); box-shadow: 0 0 8px var(--alarm); }
+  tr.br td { background: rgba(255,92,77,.05); }
+  .meas { font-variant-numeric: tabular-nums; font-weight: 700; }
+  .meas.bad { color: var(--alarm); } .meas.ok { color: var(--phos); } .meas.warn { color: var(--amber); }
+  .chan { font-size: 9.5px; letter-spacing: .05em; padding: 2px 8px; border-radius: 999px; border: 1px solid; display: inline-flex; align-items: center; gap: 5px; white-space: nowrap; }
+  .chan.phone { color: var(--amber); border-color: #6b5310; }
+  .chan.sms { color: var(--synth); border-color: #2b5580; }
+  .chan.wa { color: var(--wa); border-color: #1f6b45; }
+  .chan.none { color: var(--ink-dim); border-color: var(--hair); }
+  .board .more { margin-top: auto; padding-top: 10px; font-size: 11px; color: var(--ink-dim); border-top: 1px solid var(--hair); }
+  .board .more b { color: var(--phos-dim); }
+
+  .rail { border-left: 1px solid var(--hair); background: var(--panel); display: flex; flex-direction: column; min-height: 0; }
+  .rail .sec { padding: 13px 16px; border-bottom: 1px solid var(--hair); }
+  .rail .sec:last-child { flex: 1; }
+  .rail .lab { font-size: 10px; letter-spacing: .14em; text-transform: uppercase; color: var(--ink-dim); margin-bottom: 11px; display: flex; justify-content: space-between; }
+  .rail .lab .via { color: var(--phos-dim); letter-spacing: .04em; text-transform: none; }
+  .feed { display: flex; flex-direction: column; gap: 9px; }
+  .cert { display: grid; grid-template-columns: 46px 1fr auto; gap: 8px; font-size: 11.5px; align-items: baseline; }
+  .cert .tm { color: var(--phos-mute); font-variant-numeric: tabular-nums; font-size: 10px; }
+  .cert .ds { color: var(--ink); } .cert .ds b { color: var(--ink-dim); font-weight: 400; }
+  .cert .tag { font-size: 9px; letter-spacing: .06em; color: var(--phos-dim); }
+  .cert .tag.od { color: var(--alarm); }
+  .esc { display: grid; grid-template-columns: auto 1fr auto; gap: 10px; align-items: center; padding: 8px 0; border-bottom: 1px solid rgba(28,42,34,.5); }
+  .esc:last-child { border-bottom: 0; }
+  .esc .who { font-size: 11.5px; color: var(--ink); } .esc .who b { color: var(--ink-dim); font-weight: 400; font-size: 10px; display: block; margin-top: 1px; }
+  .esc .stt { font-size: 9.5px; letter-spacing: .06em; text-align: right; }
+  .esc .stt .m { display: block; margin-top: 2px; }
+  .esc .stt .m.real { color: var(--phos); } .esc .stt .m.prerun { color: var(--amber); }
+
+  /* ============ cockpit chrome for ACT 3/4 (single-deal drill-down) ============ */
+  .body2 { display: grid; grid-template-columns: 1fr 350px; flex: 1; min-height: 0; }
+  .dash .score.c5 { grid-template-columns: repeat(5, 1fr); }
+  .screen { position: relative; overflow: hidden; padding: 18px 24px; color: var(--phos); line-height: 1.55;
+    text-shadow: 0 0 6px rgba(53,243,154,.35);
+    background: radial-gradient(120% 80% at 50% 0%, rgba(53,243,154,.05), transparent 60%), var(--bg); font-size: 13px; }
+  .aside { background: var(--panel); border-left: 1px solid var(--hair); padding: 15px; display: flex; flex-direction: column; gap: 13px; }
+  .lab0 { font-size: 10px; letter-spacing: .16em; text-transform: uppercase; color: var(--ink-dim); margin-bottom: 8px; }
+  .card { background: var(--panel-2); border: 1px solid var(--hair); border-radius: 6px; padding: 12px; }
+  .breadcrumb { font-size: 10px; letter-spacing: .1em; color: var(--phos-mute); text-transform: uppercase; margin-bottom: 10px; }
+  .breadcrumb b { color: var(--ink-dim); }
+  .sect { font-size: 12px; font-weight: 700; letter-spacing: .16em; color: var(--ink);
+    display: flex; align-items: center; gap: 10px; margin: 0 0 14px; text-shadow: none; }
+  .sect::after { content: ""; flex: 1; height: 1px; background: var(--hair); }
+  .banner { margin: -18px -24px 14px; padding: 9px 24px; background: rgba(6,10,8,.92);
+    border-bottom: 1px solid var(--hair); font-size: 12.5px; color: var(--ink); text-shadow: none; }
+  .banner.breach { color: var(--alarm); }
+  .banner .who { color: var(--phos-dim); letter-spacing: .06em; }
+
+  .cyc { margin: 0 0 13px; }
+  .cyc .h { color: var(--ink); font-weight: 700; }
+  .cyc .h .m { color: var(--phos-mute); font-weight: 400; }
+  .r { display: flex; gap: 10px; }
+  .r .k { color: var(--phos-dim); width: 66px; flex: none; }
+  .r .v { color: var(--phos); }
+  .r.deny .v { color: var(--alarm); text-shadow: 0 0 8px rgba(255,92,77,.5); }
+  .r .allow { color: var(--phos); } .r .no { color: var(--alarm); font-weight: 700; }
+  .m-real { color: var(--phos); font-weight: 700; } .m-prerun { color: var(--amber); font-weight: 700; }
+
+  .lamps { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+  .lamp { display: flex; align-items: center; gap: 8px; padding: 8px 10px; border: 1px solid var(--hair); border-radius: 5px; background: #0a110d; }
+  .lamp .dot { width: 9px; height: 9px; border-radius: 50%; background: #23342b; flex: none; }
+  .lamp.on .dot { background: var(--phos); box-shadow: 0 0 10px var(--phos); }
+  .lamp .n { font-size: 11px; color: var(--ink-dim); } .lamp.on .n { color: var(--ink); }
+
+  .gauge .bar { position: relative; height: 10px; border-radius: 5px; margin: 14px 0 6px;
+    background: linear-gradient(90deg, rgba(255,92,77,.35) 0 43%, rgba(53,243,154,.3) 43% 100%); }
+  .gauge .thr { position: absolute; left: 43%; top: -4px; bottom: -4px; width: 2px; background: var(--ink); opacity: .5; }
+  .gauge .mk { position: absolute; top: 50%; width: 13px; height: 13px; border-radius: 50%; transform: translate(-50%,-50%);
+    border: 2px solid var(--panel-2); background: var(--alarm); box-shadow: 0 0 12px var(--alarm); }
+  .gauge .read { display: flex; justify-content: space-between; font-size: 11px; color: var(--ink-dim); }
+  .gauge .verdict { font-size: 12px; margin-top: 8px; color: var(--alarm); font-weight: 700; }
+
+  .attest { border: 1px solid var(--amber); border-radius: 6px; padding: 13px; background: #1a1408; }
+  .attest .ny { font-size: 13px; font-weight: 700; letter-spacing: .16em; color: var(--amber); margin-bottom: 9px; }
+  .chips { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 11px; }
+  .chip { font-size: 10px; letter-spacing: .04em; padding: 3px 9px; border-radius: 999px; border: 1px solid var(--hair); color: var(--ink-dim); }
+  .chip.ok { color: var(--phos); border-color: var(--phos-mute); }
+  .chip.no { color: var(--alarm); border-color: var(--alarm); font-weight: 700; }
+  .attest .msg { font-size: 11.5px; color: var(--amber); margin-bottom: 11px; line-height: 1.45; }
+  .attest .btn { text-align: center; background: #241a06; color: var(--amber); border: 1px solid var(--amber);
+    border-radius: 6px; padding: 11px; font-weight: 700; letter-spacing: .04em; }
+
+  .voice { border: 1px solid var(--amber); border-radius: 6px; padding: 12px 14px; background: #171206; margin-bottom: 14px; }
+  .voice .vh { color: var(--amber); font-weight: 700; }
+  .voice .vh .badge { font-size: 10px; letter-spacing: .12em; border: 1px solid var(--amber); border-radius: 999px; padding: 1px 7px; margin-left: 8px; }
+  .voice .vt { display: block; color: var(--ink); font-style: italic; margin: 8px 0 10px; line-height: 1.5; }
+  .voice .wave { height: 30px; border-radius: 4px; background:
+    repeating-linear-gradient(90deg, rgba(255,199,107,.55) 0 2px, transparent 2px 5px); opacity: .8; }
+
+  .paper { background: var(--paper); color: var(--paper-ink); border-radius: 3px; padding: 18px 20px;
+    font-family: var(--serif); box-shadow: 0 10px 30px rgba(0,0,0,.5); position: relative;
+    filter: contrast(1.05) brightness(.98); transform: rotate(-1deg); font-size: 13px; }
+  .paper::after { content: ""; position: absolute; inset: 0; pointer-events: none; border-radius: 3px;
+    background: radial-gradient(90% 70% at 30% 20%, transparent 60%, rgba(0,0,0,.14)),
+      repeating-linear-gradient(0deg, rgba(0,0,0,.03) 0 2px, transparent 2px 4px); mix-blend-mode: multiply; }
+  .paper .lh { font-size: 10px; letter-spacing: .2em; text-transform: uppercase; color: #6a5f49; }
+  .paper .co { font-size: 18px; font-weight: 600; margin: 2px 0 12px; }
+  .paper table { width: 100%; border-collapse: collapse; font-size: 12.5px; }
+  .paper td { padding: 4px 0; border-bottom: 1px dotted #a99e83; }
+  .paper td:last-child { text-align: right; font-variant-numeric: tabular-nums; }
+  .paper .hl { background: rgba(255,92,77,.22); box-shadow: 0 0 0 2px rgba(255,92,77,.35); }
+  .paper .stamp { position: absolute; top: 14px; right: 12px; font-family: var(--mono); font-size: 10px;
+    color: var(--alarm); border: 2px solid var(--alarm); border-radius: 4px; padding: 2px 6px; transform: rotate(6deg); opacity: .8; letter-spacing: .1em; }
+
+  /* ============ ACT 5 — FAN-OUT + PROOF ============ */
+  .a5 { position: absolute; inset: 0; display: flex; flex-direction: column; padding: 22px 30px;
+    background: radial-gradient(120% 90% at 50% 0%, rgba(53,243,154,.05), transparent 55%), var(--bg); }
+  .a5 .kick { font-size: 12px; letter-spacing: .16em; text-transform: uppercase; color: var(--ink-dim); }
+  .a5 .kick b { color: var(--phos); }
+  .a5 .kick .via { color: var(--phos-dim); }
+  .fan { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; margin: auto 0; }
+  .ch { border: 1px solid var(--hair); border-radius: 9px; padding: 15px; background: var(--panel-2); display: flex; flex-direction: column; gap: 9px; }
+  .ch .ch-h { display: flex; align-items: center; justify-content: space-between; }
+  .ch .ch-h .name { font-size: 12px; letter-spacing: .08em; text-transform: uppercase; font-weight: 700; }
+  .ch.phone .name { color: var(--amber); } .ch.sms .name { color: var(--synth); } .ch.wa .name { color: var(--wa); }
+  .ch .deal { font-size: 10px; color: var(--ink-dim); letter-spacing: .06em; }
+  .ch .bubble { background: #0a110d; border: 1px solid var(--hair); border-radius: 8px; padding: 12px 14px; font-size: 12.5px; color: var(--ink); line-height: 1.55; min-height: 120px; }
+  .ch.sms .bubble, .ch.wa .bubble { border-top-left-radius: 2px; }
+  .ch .bubble .snd { font-size: 9.5px; letter-spacing: .06em; color: var(--phos-mute); margin-bottom: 6px; text-transform: uppercase; }
+  .ch .ch-f { display: flex; align-items: center; justify-content: space-between; font-size: 9.5px; letter-spacing: .06em; }
+  .ch .ch-f .al { color: var(--phos-dim); }
+  .ch .ch-f .m.real { color: var(--phos); font-weight: 700; } .ch .ch-f .m.prerun { color: var(--amber); font-weight: 700; }
+  .a5 .proofstrip { margin-top: auto; display: grid; grid-template-columns: auto auto 1fr; gap: 22px; align-items: center; border-top: 1px solid var(--hair); padding-top: 14px; }
+  .a5 .delta2 { display: flex; align-items: center; gap: 14px; }
+  .a5 .delta2 .s { text-align: center; } .a5 .delta2 .s .l { font-size: 9px; letter-spacing: .1em; text-transform: uppercase; color: var(--ink-dim); }
+  .a5 .delta2 .s .v { font-size: 34px; font-weight: 700; font-variant-numeric: tabular-nums; line-height: 1; }
+  .a5 .delta2 .s.d .v { color: var(--phos); } .a5 .delta2 .s.p .v { color: var(--alarm); }
+  .a5 .delta2 .vs { color: var(--ink-dim); font-size: 12px; }
+  .a5 .foot { display: flex; gap: 22px; flex-wrap: wrap; align-items: baseline; }
+  .a5 .foot .fv { font-size: 20px; font-weight: 700; color: var(--ink); font-variant-numeric: tabular-nums; margin-right: 4px; }
+  .a5 .foot .fk { font-size: 10px; letter-spacing: .08em; text-transform: uppercase; color: var(--ink-dim); }
+  .a5 .enid { margin-left: auto; font-family: var(--serif); font-style: italic; color: var(--amber); font-size: 14px; align-self: flex-end; }
+</style>
+</head>
+<body>
+  <div class="meta"><span><b>WET INK</b> · storyboard mockup</span><span>covenant compliance monitor · a whole book, watched · design north-star for the live cockpit</span></div>
+
+  <!-- ================= ACT 1 — PREMISE ================= -->
+  <div class="frame">
+    <div class="a1">
+      <div class="legend"><span class="lg real on">REAL</span><span class="lg prerun">PRERUN</span><span class="lg synth">SYNTHETIC</span></div>
+      <div class="lane">Credit operations · covenant monitoring &amp; legal notice</div>
+      <div class="premise">The ink dries and the loan officer moves on to the next deal.<br>The covenant lives for <b>years</b> — compliance certs keep arriving, and <b>someone still has to watch.</b></div>
+      <div class="wm">WET&nbsp;INK</div>
+      <div class="rule"></div>
+      <div class="q">Not <i>“can the model read the PDF?”</i><br>— <b>“did anyone catch the breach, and get the lender legally noticed?”</b></div>
+      <div class="who">the borrowers are fictional · the certs, the OCR, the math, the call &amp; the messages are real</div>
+    </div>
+  </div>
+  <div class="cap"><span class="act">Act 1</span><span class="txt"><b>The premise.</b> After signing, nobody watches. Wet Ink is the watcher that stays on the whole book.</span></div>
+
+  <!-- ================= ACT 2 — MONITORING DASHBOARD ================= -->
+  <div class="frame">
+    <div class="dash scan">
+      <div class="top">
+        <div class="brand"><b>WET INK</b><span>portfolio watch · covenant compliance</span></div>
+        <div class="rt">
+          <span class="poll"><span class="d"></span>watching · live</span>
+          <div class="legend"><span class="lg real on">REAL</span><span class="lg prerun on">PRERUN</span><span class="lg synth">SYNTHETIC</span></div>
+        </div>
+      </div>
+      <div class="score">
+        <div class="kpi"><div class="n">100</div><div class="c">deals under watch</div></div>
+        <div class="kpi"><div class="n">87</div><div class="c">certs in · this qtr</div></div>
+        <div class="kpi"><div class="n good">91</div><div class="c">covenants clear</div></div>
+        <div class="kpi"><div class="n watch">6</div><div class="c">on watch</div></div>
+        <div class="kpi"><div class="n breach">3</div><div class="c">breaches caught</div></div>
+        <div class="kpi"><div class="n">3</div><div class="c">humans notified</div></div>
+      </div>
+      <div class="body">
+        <div class="board">
+          <div class="lab"><span>The book — covenant status</span><span>sorted: needs attention first</span></div>
+          <table class="deals">
+            <thead><tr><th>Status</th><th>Deal</th><th>Borrower</th><th>Covenant</th><th>Latest cert</th><th class="r">Measured</th><th class="r">Escalation</th></tr></thead>
+            <tbody>
+              <tr class="br"><td><span class="st breach"><span class="dot"></span>BREACH</span></td><td>NW-1</td><td class="b">Northwind Provisions</td><td>ICR ≥ 1.40×</td><td>Q3 restated</td><td class="r meas bad">1.33×</td><td class="r"><span class="chan phone">📞 phone call</span></td></tr>
+              <tr class="br"><td><span class="st breach"><span class="dot"></span>BREACH</span></td><td>MER-4</td><td class="b">Meridian Freight</td><td>DSCR ≥ 1.25×</td><td>Q3</td><td class="r meas bad">1.19×</td><td class="r"><span class="chan sms">💬 SMS</span></td></tr>
+              <tr class="br"><td><span class="st breach"><span class="dot"></span>BREACH</span></td><td>PAC-7</td><td class="b">Pacific Yard Svcs</td><td>DSCR ≥ 1.20×</td><td>Q3</td><td class="r meas bad">1.08×</td><td class="r"><span class="chan wa">◍ WhatsApp</span></td></tr>
+              <tr><td><span class="st watch"><span class="dot"></span>WATCH</span></td><td>CAL-2</td><td class="b">Calloway Foods</td><td>ICR ≥ 1.35×</td><td>Q3</td><td class="r meas warn">1.41×</td><td class="r"><span class="chan none">monitor</span></td></tr>
+              <tr><td><span class="st watch"><span class="dot"></span>WATCH</span></td><td>HAR-9</td><td class="b">Harbor Cold Chain</td><td>DSCR ≥ 1.30×</td><td>Q2 · overdue 6d</td><td class="r meas warn">—</td><td class="r"><span class="chan none">chase cert</span></td></tr>
+              <tr><td><span class="st clear"><span class="dot"></span>CLEAR</span></td><td>BRT-1</td><td class="b">Brightline Mfg</td><td>ICR ≥ 1.25×</td><td>Q3</td><td class="r meas ok">1.72×</td><td class="r"><span class="chan none">—</span></td></tr>
+              <tr><td><span class="st clear"><span class="dot"></span>CLEAR</span></td><td>SUM-3</td><td class="b">Summit Grocers</td><td>DSCR ≥ 1.20×</td><td>Q3</td><td class="r meas ok">1.55×</td><td class="r"><span class="chan none">—</span></td></tr>
+              <tr><td><span class="st clear"><span class="dot"></span>CLEAR</span></td><td>ORN-5</td><td class="b">Orion Logistics</td><td>ICR ≥ 1.30×</td><td>Q3</td><td class="r meas ok">2.04×</td><td class="r"><span class="chan none">—</span></td></tr>
+            </tbody>
+          </table>
+          <div class="more">+ <b>89 deals clear</b> · 12 certs due within 30 days · the officer signed and moved on — Wet Ink didn't</div>
+        </div>
+        <div class="rail">
+          <div class="sec">
+            <div class="lab"><span>Compliance certs · inbound</span></div>
+            <div class="feed">
+              <div class="cert"><span class="tm">08:12</span><span class="ds">NW-1 <b>Q3 restated cert received</b></span><span class="tag">read · OCR</span></div>
+              <div class="cert"><span class="tm">07:54</span><span class="ds">MER-4 <b>Q3 cert received</b></span><span class="tag">read · OCR</span></div>
+              <div class="cert"><span class="tm">Mon</span><span class="ds">PAC-7 <b>Q3 cert received</b></span><span class="tag">read · OCR</span></div>
+              <div class="cert"><span class="tm">—</span><span class="ds">HAR-9 <b>Q2 cert</b></span><span class="tag od">overdue 6d</span></div>
+            </div>
+          </div>
+          <div class="sec">
+            <div class="lab"><span>Escalations · outbound</span><span class="via">via ActionLayer</span></div>
+            <div>
+              <div class="esc"><span class="chan phone">📞</span><span class="who">NW-1 · Northwind<b>loan officer — the hero call</b></span><span class="stt"><span class="m real">REAL</span><span>answered</span></span></div>
+              <div class="esc"><span class="chan sms">💬</span><span class="who">MER-4 · Meridian<b>relationship manager</b></span><span class="stt"><span class="m prerun">PRERUN</span><span>delivered</span></span></div>
+              <div class="esc"><span class="chan wa">◍</span><span class="who">PAC-7 · Pacific Yard<b>credit officer</b></span><span class="stt"><span class="m prerun">PRERUN</span><span>delivered</span></span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="cap"><span class="act">Act 2</span><span class="txt"><b>The monitoring dashboard.</b> 100 deals watched, certs streaming in, the 3 breaches surfaced — each routed to a human on the right channel.</span></div>
+
+  <!-- ================= ACT 3 — THE DRILL-DOWN / READ ================= -->
+  <div class="frame">
+    <div class="dash scan">
+      <div class="top">
+        <div class="brand"><b>WET INK</b><span>deal NW-1 · Northwind Provisions</span></div>
+        <div class="rt"><span class="poll" style="text-transform:none;letter-spacing:.06em">◂ back to portfolio</span>
+          <div class="legend"><span class="lg real on">REAL</span><span class="lg prerun">PRERUN</span><span class="lg synth">SYNTHETIC</span></div></div>
+      </div>
+      <div class="score c5">
+        <div class="kpi"><div class="n">1</div><div class="c">cert read</div></div>
+        <div class="kpi"><div class="n breach">1.33× / 1.40×</div><div class="c">coverage vs floor</div></div>
+        <div class="kpi"><div class="n">0</div><div class="c">attempts denied</div></div>
+        <div class="kpi"><div class="n">1</div><div class="c">artifacts</div></div>
+        <div class="kpi"><div class="n">2.4s</div><div class="c">elapsed</div></div>
+      </div>
+      <div class="body2">
+        <div class="screen">
+          <div class="banner"><span class="who">wet-ink ▸ </span>NW-1 flagged on the board — opening the cert the judge handed me…</div>
+          <div class="breadcrumb">PORTFOLIO WATCH ▸ <b>NW-1 · covenant drill-down</b></div>
+          <div class="sect">READ THE CERT · RECOMPUTE THE COVENANT</div>
+          <div class="cyc">
+            <div class="h">◆ CYCLE 1 <span class="m">· $99.996 · agent</span></div>
+            <div class="r"><span class="k">PLAN</span><span class="v">read_statement <span style="color:var(--phos-mute)">the Q3 restated compliance cert</span></span></div>
+            <div class="r"><span class="k">GATE</span><span class="v"><span class="allow">ALLOW 200</span></span></div>
+            <div class="r"><span class="k">OBSERVE</span><span class="v"><span class="m-real">[REAL]</span> read NW1-R3-A · Adjusted EBITDA 285 / Net interest expense 214 <span style="color:var(--phos-mute)">(line renamed vs. baseline)</span></span></div>
+            <div class="r"><span class="k">WHY</span><span class="v" style="color:var(--phos-dim)">queue next — recompute from the paper, not the stale dashboard</span></div>
+          </div>
+          <div class="cyc">
+            <div class="h">◆ CYCLE 2 <span class="m">· $99.988 · agent</span></div>
+            <div class="r"><span class="k">PLAN</span><span class="v">recompute_ratio <span style="color:var(--phos-mute)">285 ÷ 214</span></span></div>
+            <div class="r"><span class="k">GATE</span><span class="v"><span class="allow">ALLOW 200</span></span></div>
+            <div class="r"><span class="k">OBSERVE</span><span class="v">ICR <b style="color:var(--alarm)">1.33×</b> — dashboard showed 1.50× (stale, pre-restatement)</span></div>
+            <div class="r"><span class="k">WHY</span><span class="v" style="color:var(--phos-dim)">below the 1.40× floor — the breach the dashboard hid</span></div>
+          </div>
+        </div>
+        <div class="aside">
+          <div><div class="lab0">The cert · Novita DeepSeek-OCR</div>
+            <div class="paper">
+              <div class="stamp">RESTATED</div>
+              <div class="lh">Northwind Provisions · Q3</div>
+              <div class="co">Covenant compliance cert.</div>
+              <table>
+                <tr><td>Adjusted EBITDA</td><td>285</td></tr>
+                <tr class="hl"><td>Net interest expense</td><td>214</td></tr>
+                <tr><td>Coverage ratio (ICR)</td><td>1.33×</td></tr>
+                <tr><td>Required floor</td><td>1.40×</td></tr>
+              </table>
+            </div>
+          </div>
+          <div class="card"><div class="lab0">Rails</div>
+            <div class="lamps">
+              <div class="lamp on"><span class="dot"></span><span class="n">GATE</span></div>
+              <div class="lamp on"><span class="dot"></span><span class="n">AUDIT</span></div>
+              <div class="lamp on"><span class="dot"></span><span class="n">NOVITA · OCR</span></div>
+              <div class="lamp"><span class="dot"></span><span class="n">ACTIONLAYER</span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="cap"><span class="act">Act 3</span><span class="txt"><b>The drill-down.</b> Click the flagged deal: the agent reads the cert a judge chose — real OCR — and recomputes what the dashboard got wrong.</span></div>
+
+  <!-- ================= ACT 4 — THE GATE + HERO CALL ================= -->
+  <div class="frame">
+    <div class="dash scan">
+      <div class="top">
+        <div class="brand"><b>WET INK</b><span>deal NW-1 · Northwind Provisions</span></div>
+        <div class="rt"><div class="legend"><span class="lg real on">REAL</span><span class="lg prerun on">PRERUN</span><span class="lg synth">SYNTHETIC</span></div></div>
+      </div>
+      <div class="score c5">
+        <div class="kpi"><div class="n">1</div><div class="c">cert read</div></div>
+        <div class="kpi"><div class="n breach">1.33× / 1.40×</div><div class="c">coverage vs floor</div></div>
+        <div class="kpi"><div class="n breach">1</div><div class="c">attempts denied</div></div>
+        <div class="kpi"><div class="n">2</div><div class="c">artifacts</div></div>
+        <div class="kpi"><div class="n">6.1s</div><div class="c">elapsed</div></div>
+      </div>
+      <div class="body2">
+        <div class="screen">
+          <div class="banner breach"><span class="who">wet-ink ▸ </span>I tried to serve notice — the gate denied me. This needs you.</div>
+          <div class="sect">THE GATE — ONE PERSON IN THIS ROOM HOLDS THE PEN</div>
+          <div class="cyc">
+            <div class="h">◆ CYCLE 4 <span class="m">· $99.972 · agent</span></div>
+            <div class="r"><span class="k">PLAN</span><span class="v">serve_notice <span style="color:var(--phos-mute)">formal notice of covenant breach</span></span></div>
+            <div class="r deny"><span class="k">GATE</span><span class="v"><span class="no">DENY 403</span> &nbsp;<span style="color:var(--alarm)">authority reserved for a human — our policy, not the agent's call</span></span></div>
+            <div class="r deny"><span class="k">OBSERVE</span><span class="v">eperm: serve_notice denied</span></div>
+            <div class="r"><span class="k">WHY</span><span class="v" style="color:var(--phos-dim)">escalate — reach the loan officer by phone</span></div>
+          </div>
+          <div class="voice">
+            <div class="vh">📞 escalation call · loan officer<span class="badge">REAL · Novita TTS</span></div>
+            <span class="vt">“This is the Wet Ink covenant monitor calling on deal NW-1. Interest coverage came in at 1.33, below the 1.40 floor. The dashboard still shows 1.50 on stale earnings. I'm holding the determination and I need your attestation to serve formal notice.”</span>
+            <div class="wave"></div>
+          </div>
+        </div>
+        <div class="aside">
+          <div class="card gauge"><div class="lab0">Covenant · deal NW-1 · ICR</div>
+            <div class="bar"><div class="thr"></div><div class="mk" style="left:23%"></div></div>
+            <div class="read"><span>1.25</span><span>floor 1.40</span><span>1.60</span></div>
+            <div class="verdict">corrected 1.33× · BREACH (&lt; 1.40)</div>
+          </div>
+          <div class="attest">
+            <div class="ny">NEEDS YOU</div>
+            <div class="chips"><span class="chip ok">numbers ✓</span><span class="chip ok">threshold ✓</span><span class="chip no">authority ✕ DENIED</span></div>
+            <div class="msg">⚠ The agent tried to <b>serve notice</b> and was denied. It needs <b>you</b>, the loan officer.</div>
+            <div class="btn">✋  ATTEST &amp; SERVE</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="cap"><span class="act">Act 4</span><span class="txt"><b>The hero escalation.</b> Numbers pass, threshold passes, authority denied. For the deal in the room, the agent phones a human — live, in its own voice.</span></div>
+
+  <!-- ================= ACT 5 — FAN-OUT (multi-channel) + PROOF ================= -->
+  <div class="frame">
+    <div class="a5 scan">
+      <div class="kick">REACH THE RIGHT HUMAN, ON THE RIGHT CHANNEL <span class="via">— phone · SMS · WhatsApp, all executed <b>via ActionLayer</b></span></div>
+      <div class="fan">
+        <div class="ch phone">
+          <div class="ch-h"><span class="name">📞 Phone call</span><span class="deal">NW-1 · the hero</span></div>
+          <div class="bubble"><div class="snd">Wet Ink → loan officer</div>“…coverage came in at 1.33, below the 1.40 floor. I'm holding the determination and I need your attestation to serve notice.”</div>
+          <div class="ch-f"><span class="al">Novita TTS · live call</span><span class="m real">REAL · answered</span></div>
+        </div>
+        <div class="ch sms">
+          <div class="ch-h"><span class="name">💬 SMS</span><span class="deal">MER-4 · Meridian</span></div>
+          <div class="bubble"><div class="snd">Wet Ink → relationship mgr</div>WET INK · MER-4 breach: DSCR 1.19× vs 1.25× floor on the Q3 cert. Reply ATTEST to authorize formal notice, or OPEN to review.</div>
+          <div class="ch-f"><span class="al">ActionLayer · SMS</span><span class="m prerun">PRERUN · delivered</span></div>
+        </div>
+        <div class="ch wa">
+          <div class="ch-h"><span class="name">◍ WhatsApp</span><span class="deal">PAC-7 · Pacific Yard</span></div>
+          <div class="bubble"><div class="snd">Wet Ink → credit officer</div>⚠ PAC-7 covenant breach — DSCR 1.08× vs 1.20× floor (Q3). Determination held for your attestation. Tap to open the deal cockpit.</div>
+          <div class="ch-f"><span class="al">ActionLayer · WhatsApp</span><span class="m prerun">PRERUN · delivered</span></div>
+        </div>
+      </div>
+      <div class="proofstrip">
+        <div class="delta2">
+          <div class="s d"><div class="l">dashboard said</div><div class="v">1.50×</div></div>
+          <div class="vs">vs</div>
+          <div class="s p"><div class="l">paper says</div><div class="v">1.33×</div></div>
+        </div>
+        <div style="width:1px;height:44px;background:var(--hair)"></div>
+        <div class="foot">
+          <span><span class="fv">100</span><span class="fk">deals watched</span></span>
+          <span><span class="fv">3</span><span class="fk">breaches caught</span></span>
+          <span><span class="fv">3</span><span class="fk">humans reached · 3 channels</span></span>
+          <span><span class="fv">1</span><span class="fk">notice served · FaxZero</span></span>
+          <span class="enid">watched the book · caught the breach · reached a human · served the notice. That's Enid.</span>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="cap"><span class="act">Act 5</span><span class="txt"><b>The fan-out + proof.</b> The hero gets a call; the rest get SMS &amp; WhatsApp — every escalation executed through ActionLayer. Close on the book, not a feature.</span></div>
+</body>
+</html>

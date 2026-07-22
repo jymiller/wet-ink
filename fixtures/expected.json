@@ -1,0 +1,62 @@
+{
+  "NW1-R3-A": {
+    "baseline": {
+      "ebitda": 320,
+      "interest": 210,
+      "label_e": "EBITDA",
+      "label_i": "Net interest expense"
+    },
+    "floor": 1.4,
+    "label_e": "Adjusted EBITDA",
+    "ebitda": 285,
+    "label_i": "Net interest expense",
+    "interest": 214,
+    "ratio": 1.33,
+    "breach": true
+  },
+  "NW1-R3-B": {
+    "baseline": {
+      "ebitda": 320,
+      "interest": 210,
+      "label_e": "EBITDA",
+      "label_i": "Net interest expense"
+    },
+    "floor": 1.4,
+    "label_e": "EBITDA",
+    "ebitda": 291,
+    "label_i": "Net interest expense",
+    "interest": 214,
+    "ratio": 1.36,
+    "breach": true
+  },
+  "NW1-R3-C": {
+    "baseline": {
+      "ebitda": 320,
+      "interest": 210,
+      "label_e": "EBITDA",
+      "label_i": "Net interest expense"
+    },
+    "floor": 1.4,
+    "label_e": "EBITDA",
+    "ebitda": 322,
+    "label_i": "Net finance charges",
+    "interest": 236,
+    "ratio": 1.36,
+    "breach": true
+  },
+  "NW1-R3-D": {
+    "baseline": {
+      "ebitda": 320,
+      "interest": 210,
+      "label_e": "EBITDA",
+      "label_i": "Net interest expense"
+    },
+    "floor": 1.4,
+    "label_e": "Adjusted EBITDA",
+    "ebitda": 334,
+    "label_i": "Net interest expense",
+    "interest": 216,
+    "ratio": 1.55,
+    "breach": false
+  }
+}

@@ -1,0 +1,12 @@
+.env
+.env.local
+HANDOFF.md
+GUIDELINES.md
+node_modules/
+audit.jsonl
+*.local.*
+scratch/
+props/*.pdf
+.wrangler/
+.DS_Store
+public/*.mp3

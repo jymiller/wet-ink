@@ -1,0 +1,235 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>WET INK — portfolio watch</title>
+<style>
+  /* tokens shared with cockpit.html + test.html */
+  :root{--bg:#060a08;--panel:#0b120e;--panel2:#0f1712;--hair:#1c2a22;--phos:#35f39a;--phos-dim:#1f8f5e;--phos-mute:#146b45;
+    --amber:#ffc76b;--alarm:#ff5c4d;--synth:#6cb8ff;--wa:#4fe38a;--ink:#d6efe2;--ink-dim:#8aa89a;
+    --mono:ui-monospace,"SF Mono",Menlo,Consolas,monospace;--serif:ui-serif,"Iowan Old Style",Georgia,serif;}
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--mono);font-size:13px;height:100vh;display:flex;flex-direction:column;overflow:hidden}
+
+  /* top bar */
+  .top{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:11px 20px;border-bottom:1px solid var(--hair);background:var(--panel);flex:none}
+  .top .brand{display:flex;align-items:baseline;gap:12px}
+  .top .brand b{font-family:var(--serif);font-size:19px;color:var(--amber);letter-spacing:.5px}
+  .top .brand span{font-size:10.5px;letter-spacing:.18em;text-transform:uppercase;color:var(--ink-dim)}
+  .top .rt{display:flex;align-items:center;gap:14px}
+  .poll{font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-dim);display:flex;align-items:center;gap:6px}
+  .poll .d{width:7px;height:7px;border-radius:50%;background:#23342b}
+  .poll .d.on{background:var(--phos);box-shadow:0 0 8px var(--phos)}
+  .legend{display:flex;gap:8px;align-items:center}
+  .lg{font-size:10px;letter-spacing:.12em;padding:2px 8px;border-radius:999px;border:1px solid;opacity:.4;transition:opacity .25s}
+  .lg.on{opacity:1;box-shadow:0 0 8px currentColor}
+  .lg.real{color:var(--phos);border-color:var(--phos-mute)} .lg.prerun{color:var(--amber);border-color:#6b5310} .lg.synth{color:var(--synth);border-color:#2b5580}
+
+  /* scoreboard */
+  .score{display:grid;grid-template-columns:repeat(8,1fr);gap:1px;background:var(--hair);border-bottom:1px solid var(--hair);flex:none}
+  .kpi{background:var(--panel);padding:8px 16px}
+  .kpi .n{font-size:19px;font-weight:700;font-variant-numeric:tabular-nums;line-height:1.1;color:var(--ink)}
+  .kpi .n.b{color:var(--alarm)} .kpi .n.g{color:var(--phos)} .kpi .n.a{color:var(--amber)}
+  .kpi .c{font-size:9px;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-dim);margin-top:3px}
+
+  .wrap{display:grid;grid-template-columns:1fr 360px;flex:1;min-height:0}
+  @media(max-width:900px){.wrap{grid-template-columns:1fr}.side{display:none}}
+  .main{padding:16px 20px;overflow:auto}
+  .side{border-left:1px solid var(--hair);background:var(--panel);display:flex;flex-direction:column;min-height:0}
+
+  .sec-h{font-size:11px;font-weight:700;letter-spacing:.16em;color:var(--ink);display:flex;align-items:center;gap:10px;margin:0 0 12px;text-transform:uppercase}
+  .sec-h::after{content:"";flex:1;height:1px;background:var(--hair)}
+  .sec-h .sub{font-weight:400;font-size:9.5px;letter-spacing:.08em;color:var(--ink-dim);text-transform:none}
+
+  /* heatmap */
+  .grid{display:grid;grid-template-columns:repeat(10,1fr);gap:5px;max-width:600px}
+  .cell{aspect-ratio:1;border-radius:4px;background:#141d18;border:1px solid #1c2a22;display:flex;align-items:center;justify-content:center;
+    font-size:8px;color:#3a5548;transition:background .25s,box-shadow .25s;position:relative}
+  .cell.pre{opacity:.28}
+  .cell.queued{background:#1a2620;color:#4a6657}
+  .cell.scanning{background:#2a230d;border-color:var(--amber);color:var(--amber);animation:pulse 1s ease-in-out infinite}
+  .cell.clear{background:#0f2a1c;border-color:var(--phos-dim);color:var(--phos)}
+  .cell.breach{background:#2a100c;border-color:var(--alarm);color:var(--alarm);box-shadow:0 0 8px rgba(255,92,77,.4)}
+  .cell.error{background:#0e1a26;border-color:var(--synth);color:var(--synth)}
+  @keyframes pulse{50%{opacity:.55}}
+  .legend2{display:flex;flex-wrap:wrap;gap:12px;margin:14px 0 22px;font-size:10px;color:var(--ink-dim)}
+  .legend2 i{display:inline-block;width:9px;height:9px;border-radius:2px;margin-right:5px;vertical-align:-1px}
+
+  /* needs attention list */
+  .att{display:grid;grid-template-columns:96px 1fr auto auto;gap:12px;align-items:center;padding:9px 10px;border:1px solid rgba(255,92,77,.25);
+    background:rgba(255,92,77,.05);border-radius:6px;margin-bottom:7px;font-size:12px}
+  .st{display:inline-flex;align-items:center;gap:7px;font-size:10px;letter-spacing:.06em}
+  .st .dot{width:8px;height:8px;border-radius:50%;flex:none}
+  .st.breach{color:var(--alarm);font-weight:700}.st.breach .dot{background:var(--alarm);box-shadow:0 0 8px var(--alarm)}
+  .att .dl{color:var(--ink)} .att .dl b{color:var(--ink)}
+  .att .mv{color:var(--ink-dim);font-variant-numeric:tabular-nums} .att .mv b{color:var(--alarm)} .att .mv .fl{color:var(--ink-dim)}
+  .att .empty,.emptyx{color:var(--ink-dim);font-size:12px;padding:14px 4px;line-height:1.5}
+
+  .chan{font-size:9.5px;letter-spacing:.05em;padding:3px 9px;border-radius:999px;border:1px solid;display:inline-flex;align-items:center;gap:5px;white-space:nowrap}
+  .chan.phone{color:var(--amber);border-color:#6b5310} .chan.sms{color:var(--synth);border-color:#2b5580} .chan.wa{color:var(--wa);border-color:#1f6b45}
+
+  /* side rail */
+  .grp{padding:14px 16px;border-bottom:1px solid var(--hair)}
+  .grp.flex{flex:1;min-height:0;display:flex;flex-direction:column}
+  .grp h3{margin:0 0 11px;font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:var(--ink-dim);display:flex;justify-content:space-between}
+  .grp h3 .via{color:var(--phos-dim);letter-spacing:.04em;text-transform:none}
+  button{font-family:var(--mono);font-size:12px;width:100%;padding:9px;margin-bottom:7px;border-radius:6px;border:1px solid;cursor:pointer;background:#0e1a13;color:var(--phos);border-color:var(--phos-dim);transition:all .15s}
+  button:hover{background:#12241a} button:disabled{opacity:.4;cursor:default}
+  button.live{color:var(--alarm);border-color:var(--alarm)} button.warn{color:var(--amber);border-color:#6b5310} button.mut{color:var(--ink-dim);border-color:var(--hair)}
+  a.cockpit{display:block;text-align:center;text-decoration:none;font-size:11px;letter-spacing:.06em;color:var(--phos-dim);padding:8px;border:1px dashed var(--phos-mute);border-radius:6px;margin-top:3px}
+  a.cockpit:hover{color:var(--phos);background:#0e1a13}
+
+  .esc{display:grid;grid-template-columns:auto 1fr auto;gap:10px;align-items:center;padding:8px 0;border-bottom:1px solid rgba(28,42,34,.5)}
+  .esc:last-child{border-bottom:0}
+  .esc .chan{padding:4px 7px;font-size:11px}
+  .esc .who{font-size:11.5px;color:var(--ink)} .esc .who b{color:var(--ink-dim);font-weight:400;font-size:10px;display:block;margin-top:1px}
+  .esc .stt{font-size:9.5px;letter-spacing:.06em;text-align:right} .esc .stt .m{display:block;margin-top:2px}
+  .esc .stt .m.real{color:var(--phos)} .esc .stt .m.prerun{color:var(--amber)}
+
+  .log{flex:1;min-height:80px;background:#070c09;border:1px solid var(--hair);border-radius:6px;padding:10px;font-size:11px;line-height:1.5;overflow:auto;white-space:pre-wrap;color:var(--ink-dim);margin-top:4px}
+  .log b{color:var(--phos)} .log .e{color:var(--alarm)} .log .w{color:var(--amber)}
+</style></head><body>
+  <div class="top">
+    <div class="brand"><b>WET INK</b><span>portfolio watch · covenant compliance monitor</span></div>
+    <div class="rt">
+      <span class="poll"><span class="d" id="poll"></span><span id="mode">idle</span></span>
+      <div class="legend">
+        <span class="lg real" id="lgReal">REAL</span>
+        <span class="lg prerun" id="lgPrerun">PRERUN</span>
+        <span class="lg synth" id="lgSynth">SYNTHETIC</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="score">
+    <div class="kpi"><div class="n" id="k_total">100</div><div class="c">deals watched</div></div>
+    <div class="kpi"><div class="n" id="k_scanned">0/100</div><div class="c">certs scanned</div></div>
+    <div class="kpi"><div class="n g" id="k_clear">0</div><div class="c">covenants clear</div></div>
+    <div class="kpi"><div class="n b" id="k_breach">0</div><div class="c">breaches caught</div></div>
+    <div class="kpi"><div class="n a" id="k_notify">0</div><div class="c">humans to notify</div></div>
+    <div class="kpi"><div class="n g" id="k_thru">0</div><div class="c">deals/sec</div></div>
+    <div class="kpi"><div class="n" id="k_elapsed">0.0s</div><div class="c">elapsed</div></div>
+    <div class="kpi"><div class="n" id="k_cost">$0.00</div><div class="c">novita spend</div></div>
+  </div>
+
+  <div class="wrap">
+    <div class="main">
+      <div class="sec-h">The book — 100 deals under watch<span class="sub">the officer signed and moved on · Wet Ink didn't</span></div>
+      <div class="grid" id="grid"></div>
+      <div class="legend2">
+        <span><i style="background:#1a2620"></i>queued</span>
+        <span><i style="background:var(--amber)"></i>reading cert</span>
+        <span><i style="background:var(--phos)"></i>covenant clear</span>
+        <span><i style="background:var(--alarm)"></i>breach</span>
+        <span><i style="background:var(--synth)"></i>error</span>
+        <span style="opacity:.4"><i style="background:#141d18"></i>cert not yet in</span>
+      </div>
+      <div class="sec-h">Needs attention — covenant breaches<span class="sub">routed to a human, on the right channel</span></div>
+      <div id="breachList"><div class="empty">No breaches yet — run a scan to watch the book fill. Breaches surface here, each routed to a human.</div></div>
+    </div>
+
+    <div class="side">
+      <div class="grp">
+        <h3>Scan the book</h3>
+        <button id="b_sim" class="warn">▶ SIMULATE SCAN · free, paced</button>
+        <button id="b_live" class="live">▶ LIVE SCAN · real Novita, spends</button>
+        <button id="b_reset" class="mut">↺ RESET portfolio</button>
+        <a class="cockpit" href="/">▸ open the hero deal in the cockpit</a>
+      </div>
+      <div class="grp">
+        <h3><span>Escalations · outbound</span><span class="via">via ActionLayer</span></h3>
+        <div id="escList"><div class="emptyx">Escalations appear as breaches are found — phone for the hero, SMS &amp; WhatsApp for the rest.</div></div>
+      </div>
+      <div class="grp flex">
+        <h3>Activity</h3>
+        <div class="log" id="log">ready · watching :8080. hit SIMULATE to fill the book at zero cost.</div>
+      </div>
+    </div>
+  </div>
+
+<script>
+  const $=(id)=>document.getElementById(id);
+  const esc=(s)=>String(s==null?"":s).replace(/[<&]/g,c=>({"<":"&lt;","&":"&amp;"}[c]));
+  const log=(html,cls)=>{const l=$("log");l.innerHTML+=(cls?`<span class="${cls}">`:"")+html+(cls?"</span>":"")+"\n";l.scrollTop=l.scrollHeight;};
+
+  // build 100 heatmap cells (backend wiring preserved)
+  const grid=$("grid"); const cells=[];
+  for(let i=0;i<100;i++){const c=document.createElement("div");c.className="cell";grid.appendChild(c);cells.push(c);}
+
+  // channel routing: first breach in the book → phone (the hero call); rest alternate SMS / WhatsApp
+  const CH={phone:{g:"📞",label:"📞 phone call",cls:"phone",role:"loan officer — hero call"},
+            sms:{g:"💬",label:"💬 SMS",cls:"sms",role:"relationship manager"},
+            wa:{g:"◍",label:"◍ WhatsApp",cls:"wa",role:"credit officer"}};
+  const channelFor=(order)=> order===0?CH.phone : (order%2===1?CH.sms:CH.wa);
+
+  // honesty legend reflects how the numbers were produced
+  let scanMode=null; // 'REAL' (live Novita) | 'SYNTHETIC' (sim) | null
+  function litLegend(hasBreaches){
+    $("lgReal").classList.toggle("on",scanMode==="REAL");
+    $("lgSynth").classList.toggle("on",scanMode==="SYNTHETIC");
+    $("lgPrerun").classList.toggle("on",!!hasBreaches); // escalation sends are pre-run until ActionLayer is wired live
+  }
+
+  let deals=[];
+  function render(p){
+    deals=p.deals||[];
+    deals.forEach((d,i)=>{const c=cells[i];if(!c)return;
+      const arrived=d.arrived!==false;
+      c.className="cell "+(d.status||"queued")+(arrived?"":" pre");
+      c.textContent=(d.id||"").replace(/^D-?/,"");
+      c.title=`${d.borrower||d.id} · ${d.sector||""}\nDSCR ${d.dscr??"—"} / floor ${d.threshold}\n${d.status}${d.note?" ("+d.note+")":""}`;
+    });
+    const s=p.stats||{},co=p.coordinator||{};
+    const scanned=(s.clear||0)+(s.breach||0)+(s.error||0);
+    $("k_total").textContent=s.total||100;
+    $("k_scanned").textContent=`${scanned}/${s.total||100}`;
+    $("k_clear").textContent=s.clear||0;
+    $("k_breach").textContent=s.breach||0;
+    $("k_notify").textContent=s.breach||0;
+    $("k_thru").textContent=co.throughput||0;
+    $("k_elapsed").textContent=((co.elapsed||0).toFixed?(co.elapsed).toFixed(1):(co.elapsed||0))+"s";
+    $("k_cost").textContent="$"+((co.cost||0).toFixed?(co.cost).toFixed(4):"0.0000");
+    $("mode").textContent=co.running?(scanMode==="REAL"?"live · novita":"simulating"):(scanned?"watching":"idle");
+
+    // derive the honesty label from the data itself (not the button) — synthetic notes / real Novita spend
+    const scannedDeals=deals.filter(d=>d.status==="clear"||d.status==="breach"||d.status==="error");
+    if(scannedDeals.length){
+      if((co.cost||0)>0) scanMode="REAL";
+      else if(scannedDeals.some(d=>/synth/i.test(d.note||""))) scanMode="SYNTHETIC";
+    }
+
+    // breaches → needs-attention + escalations, routed by channel
+    const breaches=deals.map((d,i)=>({d,i})).filter(x=>x.d.status==="breach");
+    litLegend(breaches.length>0);
+
+    $("breachList").innerHTML = breaches.length ? breaches.map((x,order)=>{
+      const ch=channelFor(order);
+      return `<div class="att">
+        <span class="st breach"><span class="dot"></span>BREACH</span>
+        <span class="dl">${esc(x.d.id)} · <b>${esc(x.d.borrower||x.d.sector||"")}</b></span>
+        <span class="mv">DSCR <b>${x.d.dscr??"—"}</b> <span class="fl">/ ${x.d.threshold} floor</span></span>
+        <span class="chan ${ch.cls}">${ch.label}</span>
+      </div>`;
+    }).join("") : `<div class="empty">No breaches yet — run a scan to watch the book fill. Breaches surface here, each routed to a human.</div>`;
+
+    $("escList").innerHTML = breaches.length ? breaches.slice(0,6).map((x,order)=>{
+      const ch=channelFor(order),hero=order===0;
+      return `<div class="esc">
+        <span class="chan ${ch.cls}">${ch.g}</span>
+        <span class="who">${esc(x.d.id)} · ${esc(x.d.borrower||"")}<b>${ch.role}</b></span>
+        <span class="stt"><span class="m ${hero?"real":"prerun"}">${hero?"REAL":"PRERUN"}</span><span>${hero?"→ cockpit":"via ActionLayer"}</span></span>
+      </div>`;
+    }).join("")+(breaches.length>6?`<div class="emptyx" style="padding:8px 0 0">+ ${breaches.length-6} more breaches routed…</div>`:"")
+      : `<div class="emptyx">Escalations appear as breaches are found — phone for the hero, SMS &amp; WhatsApp for the rest.</div>`;
+  }
+
+  async function poll(){
+    try{const r=await fetch("/api/portfolio");const p=await r.json();$("poll").classList.add("on");render(p);}
+    catch(e){$("poll").classList.remove("on");}
+  }
+  setInterval(poll,500); poll();
+
+  async function post(url){const r=await fetch(url,{method:"POST"});return r.json();}
+  $("b_sim").onclick=async()=>{scanMode="SYNTHETIC";litLegend(false);log('<b>SIMULATE</b> — reading the book, offline &amp; paced, zero cost…');const r=await post("/api/scan?sim=1");log("  &rarr; "+esc(JSON.stringify(r)));};
+  $("b_live").onclick=async()=>{if(!confirm("LIVE scan fires real Novita calls (spends the voucher). Proceed?"))return;scanMode="REAL";litLegend(false);log('<b>LIVE</b> — real Novita reading the certs…',"w");const r=await post("/api/scan");log("  &rarr; "+esc(JSON.stringify(r)));};
+  $("b_reset").onclick=async()=>{scanMode=null;const r=await post("/api/reset");log("reset &rarr; book re-queued");render({deals:[],stats:{},coordinator:{}});};
+</script>
+</body></html>

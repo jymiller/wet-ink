@@ -1,0 +1,115 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<title>WET INK — judge QR cards (print sheet)</title>
+<!--
+  Judge hand-out cards: "scan to touch the live cockpit."
+  Print on heavy stock, cut on the crop marks -> four 3.5x2in cards.
+  DROP-IN: the QR bitmap is a placeholder until the cloudflared tunnel URL is final.
+    once you have the URL, generate a QR (any tool, e.g. `qrencode -o qr.png -s 10 <URL>`)
+    and replace the .qr-slot background, OR paste the QR <img> in. Everything else is set.
+-->
+<style>
+  @page { size: letter; margin: 0.5in; }
+  :root { --paper: #f4f0e6; --ink: #26221a; --amber: #9a6b12; --phos: #146b45; --alarm: #b23325; --mute: #6d6552; }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; background: #d8d3c6; }
+  body { display: flex; justify-content: center; padding: 24px; }
+  .sheet { width: 7.5in; display: grid; grid-template-columns: 1fr 1fr; gap: 0.3in; }
+
+  .card { position: relative; height: 2.4in; background:
+      linear-gradient(104deg, #f6f3ea 0%, #efeadd 46%, #f4f0e6 74%, #eae4d5 100%);
+    color: var(--ink); border: 1px solid #cfc8b4; border-radius: 4px; padding: 0.28in 0.3in;
+    font-family: Georgia, "Times New Roman", serif; overflow: hidden;
+    display: flex; flex-direction: column; justify-content: space-between; }
+  .card::after { content: ""; position: absolute; inset: 0; pointer-events: none; border-radius: 4px;
+    background: radial-gradient(90% 70% at 25% 15%, transparent 62%, rgba(0,0,0,.06));
+    mix-blend-mode: multiply; }
+  /* crop ticks */
+  .card::before { content: ""; position: absolute; inset: -7px; border: 1px dashed #b7b0a0; border-radius: 6px; opacity: .0; }
+
+  .card .l { flex: 1; padding-right: 0.24in; }
+  .wm { font-family: Georgia, serif; font-weight: 700; font-size: 27px; letter-spacing: .06em; color: var(--amber); font-variant: small-caps; }
+  .rule { width: 46px; height: 1px; background: var(--phos); margin: 7px 0 9px; }
+  .q { font-size: 12.5px; line-height: 1.42; color: var(--ink); }
+  .q i { color: var(--mute); } .q b { color: var(--ink); font-weight: 700; }
+  .cta { font-family: "Courier New", monospace; font-size: 8.5px; letter-spacing: .12em; text-transform: uppercase; color: var(--mute); margin-top: 8px; }
+
+  .r { display: flex; flex-direction: column; align-items: center; gap: 6px; }
+  .qr-slot { width: 1.35in; height: 1.35in; background: #fff; border: 1px solid #cfc8b4; border-radius: 3px;
+    display: flex; align-items: center; justify-content: center; position: relative;
+    /* faux finder-pattern placeholder so the layout reads; NOT a scannable code */
+    background-image:
+      linear-gradient(#111 0 0), linear-gradient(#111 0 0), linear-gradient(#111 0 0),
+      repeating-conic-gradient(#111 0% 25%, #fff 0% 50%);
+    background-size: 26px 26px, 26px 26px, 26px 26px, 12px 12px;
+    background-position: 6px 6px, calc(100% - 6px) 6px, 6px calc(100% - 6px), 0 0;
+    background-repeat: no-repeat, no-repeat, no-repeat, repeat; }
+  .qr-slot span { position: absolute; bottom: -0.02in; background: #fff; padding: 1px 5px; font-family: "Courier New", monospace;
+    font-size: 7px; letter-spacing: .1em; color: var(--alarm); border: 1px solid var(--alarm); border-radius: 3px; }
+  .r .cap { font-family: "Courier New", monospace; font-size: 8px; letter-spacing: .08em; color: var(--mute); text-align: center; }
+
+  .serial { position: absolute; bottom: 0.12in; left: 0.3in; font-family: "Courier New", monospace; font-size: 7px; color: #8a836f; letter-spacing: .1em; }
+  .cardbody { display: flex; height: 100%; }
+
+  @media print { html, body { background: #fff; } .sheet { gap: 0.35in; } }
+</style>
+</head>
+<body>
+  <div class="sheet">
+    <!-- card ×4 (identical; hand one to each judge) -->
+    <div class="card"><div class="cardbody">
+      <div class="l">
+        <div class="wm">Wet&nbsp;Ink</div>
+        <div class="rule"></div>
+        <div class="q">Not <i>“can the model read the PDF?”</i><br>— <b>“did the lender get legally noticed?”</b></div>
+        <div class="cta">▸ scan · touch the live cockpit</div>
+      </div>
+      <div class="r">
+        <div class="qr-slot"><span>PLACEHOLDER</span></div>
+        <div class="cap">covenant &amp; legal-notice agent</div>
+      </div>
+    </div><div class="serial">WET-INK · credit ops · NW-1</div></div>
+
+    <div class="card"><div class="cardbody">
+      <div class="l">
+        <div class="wm">Wet&nbsp;Ink</div>
+        <div class="rule"></div>
+        <div class="q">Not <i>“can the model read the PDF?”</i><br>— <b>“did the lender get legally noticed?”</b></div>
+        <div class="cta">▸ scan · touch the live cockpit</div>
+      </div>
+      <div class="r">
+        <div class="qr-slot"><span>PLACEHOLDER</span></div>
+        <div class="cap">covenant &amp; legal-notice agent</div>
+      </div>
+    </div><div class="serial">WET-INK · credit ops · NW-1</div></div>
+
+    <div class="card"><div class="cardbody">
+      <div class="l">
+        <div class="wm">Wet&nbsp;Ink</div>
+        <div class="rule"></div>
+        <div class="q">Not <i>“can the model read the PDF?”</i><br>— <b>“did the lender get legally noticed?”</b></div>
+        <div class="cta">▸ scan · touch the live cockpit</div>
+      </div>
+      <div class="r">
+        <div class="qr-slot"><span>PLACEHOLDER</span></div>
+        <div class="cap">covenant &amp; legal-notice agent</div>
+      </div>
+    </div><div class="serial">WET-INK · credit ops · NW-1</div></div>
+
+    <div class="card"><div class="cardbody">
+      <div class="l">
+        <div class="wm">Wet&nbsp;Ink</div>
+        <div class="rule"></div>
+        <div class="q">Not <i>“can the model read the PDF?”</i><br>— <b>“did the lender get legally noticed?”</b></div>
+        <div class="cta">▸ scan · touch the live cockpit</div>
+      </div>
+      <div class="r">
+        <div class="qr-slot"><span>PLACEHOLDER</span></div>
+        <div class="cap">covenant &amp; legal-notice agent</div>
+      </div>
+    </div><div class="serial">WET-INK · credit ops · NW-1</div></div>
+  </div>
+</body>
+</html>
