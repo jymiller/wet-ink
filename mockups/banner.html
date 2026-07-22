@@ -1,0 +1,55 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8">
+<title>WET INK — social banner</title>
+<style>
+  :root{--bg:#060a08;--panel:#0b120e;--hair:#1c2a22;--phos:#35f39a;--phos-dim:#1f8f5e;--phos-mute:#146b45;
+    --amber:#ffc76b;--alarm:#ff5c4d;--synth:#6cb8ff;--ink:#d6efe2;--ink-dim:#7f9a8c;
+    --mono:ui-monospace,"SF Mono",Menlo,Consolas,monospace;--serif:ui-serif,"Iowan Old Style",Georgia,serif;}
+  *{box-sizing:border-box;margin:0}
+  html,body{width:1280px;height:640px;overflow:hidden}
+  .stage{position:relative;width:1280px;height:640px;background:
+      radial-gradient(90% 120% at 50% -10%, rgba(255,199,107,.10), transparent 55%),
+      radial-gradient(70% 90% at 85% 115%, rgba(53,243,154,.08), transparent 60%),
+      var(--bg);
+    color:var(--ink);font-family:var(--mono);display:flex;flex-direction:column;
+    align-items:center;justify-content:center;text-align:center;padding:0 90px}
+  .stage::after{content:"";position:absolute;inset:0;pointer-events:none;
+    background:repeating-linear-gradient(0deg, rgba(0,0,0,.16) 0 1px, transparent 1px 3px);mix-blend-mode:multiply}
+
+  .legend{position:absolute;top:34px;right:40px;display:flex;gap:10px}
+  .lg{font-size:13px;letter-spacing:.14em;padding:4px 12px;border-radius:999px;border:1px solid}
+  .lg.real{color:var(--phos);border-color:var(--phos-mute);box-shadow:0 0 12px rgba(53,243,154,.35)}
+  .lg.prerun{color:var(--amber);border-color:#6b5310;opacity:.85}
+  .lg.synth{color:var(--synth);border-color:#2b5580;opacity:.7}
+  .brandtag{position:absolute;top:36px;left:44px;font-size:13px;letter-spacing:.14em;color:var(--phos-dim);text-transform:uppercase}
+
+  .lane{font-size:16px;letter-spacing:.34em;text-transform:uppercase;color:var(--phos-dim);margin-bottom:20px}
+  .wm{font-family:var(--serif);font-weight:600;color:var(--amber);letter-spacing:.05em;
+    font-size:132px;line-height:.9;text-shadow:0 0 60px rgba(255,199,107,.35)}
+  .rule{width:170px;height:1px;background:var(--phos-mute);margin:22px 0 20px}
+  .tag{font-family:var(--serif);font-size:30px;color:var(--ink);line-height:1.4;max-width:34ch;margin-bottom:16px}
+  .tag b{color:var(--amber);font-weight:600}
+  .q{font-family:var(--serif);font-size:21px;color:var(--ink-dim);line-height:1.4;max-width:46ch}
+  .q i{color:var(--ink-dim);font-style:italic}
+  .q b{color:var(--phos);font-weight:600}
+
+  .foot{position:absolute;bottom:34px;left:0;right:0;display:flex;align-items:center;justify-content:center;gap:16px;
+    font-size:15px;letter-spacing:.1em;color:var(--ink-dim)}
+  .foot .dot{color:var(--phos-mute)}
+  .foot b{color:var(--ink)}
+  .foot .amber{color:var(--amber);font-family:var(--serif);font-style:italic;letter-spacing:.02em}
+</style></head>
+<body>
+  <div class="stage">
+    <div class="brandtag">covenant compliance monitor</div>
+    <div class="legend">
+      <span class="lg real">REAL</span><span class="lg prerun">PRERUN</span><span class="lg synth">SYNTHETIC</span>
+    </div>
+    <div class="lane">Credit operations · covenant &amp; legal notice</div>
+    <div class="wm">WET&nbsp;INK</div>
+    <div class="rule"></div>
+    <div class="tag">After the deal is done and the ink is dry, the information is lost —<br><b>until Wet Ink monitors loan compliance to term.</b></div>
+    <div class="q">Not <i>“can the model read the PDF?”</i> — <b>“did the lender get legally noticed?”</b></div>
+    <div class="foot"><b>Novita</b><span class="dot">·</span><b>ActionLayer</b><span class="dot">·</span><span class="amber">inspired by the work on Enid</span></div>
+  </div>
+</body></html>

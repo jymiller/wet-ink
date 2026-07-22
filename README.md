@@ -1,9 +1,14 @@
+<p align="center">
+  <img src="docs/social-preview.png" alt="Wet Ink — covenant monitoring &amp; legal notice. Not &quot;can the model read the PDF?&quot; — &quot;did the lender get legally noticed?&quot;" width="880">
+</p>
+
 # Wet Ink
 
-**Covenant monitoring & legal notice for credit teams.**
-Not *"can the model read the PDF?"* — *"did anyone catch the breach, and get the lender legally noticed?"*
+**After the deal is done and the ink is dry, the information is lost — until Wet Ink monitors loan compliance to term.**
 
-Built for the Last Mile Agent Hackathon (July 21, 2026, SF). A working demo of [Enid](https://enidpa.com).
+Covenant monitoring & legal notice for credit teams. Not *"can the model read the PDF?"* — *"did anyone catch the breach, and get the lender legally noticed?"*
+
+Built for the Last Mile Agent Hackathon (July 21, 2026, SF). Inspired by the work on [Enid](https://enidpa.com).
 
 ![Wet Ink portfolio watch — 100 deals under covenant watch; breaches surfaced and flagged for the desk, with the priority deal escalated by phone in the cockpit](docs/fleet.png)
 
@@ -79,4 +84,4 @@ Runs **offline-deterministic with zero keys** — that's the demo's floor, and e
 
 ## About
 
-Wet Ink is a working slice of **[Enid](https://enidpa.com)** — the attestation gate, the determination file, and the evidence bundle *are* the product. Detection isn't done until the notice is served, and serving it is a decision a human owns.
+Wet Ink is **inspired by the work on [Enid](https://enidpa.com)** — the attestation gate, the determination file, and the evidence bundle *are* the product. Detection isn't done until the notice is served, and serving it is a decision a human owns.
