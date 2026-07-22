@@ -9,6 +9,10 @@
 const CHAT = "https://api.novita.ai/openai/v1/chat/completions";
 const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
 const clamp = (n, lo, hi) => Math.max(lo, Math.min(hi, n));
+// Live terminal monitor — prints to the server's stdout so you can watch the
+// fleet's agents fire real Novita calls during a LIVE scan (SIMULATE never calls
+// out, so a quiet terminal there vs. a busy one here is the proof it's real).
+const flog = (s) => { try { console.log("\x1b[38;5;42m[fleet]\x1b[0m " + s); } catch { /* never break the run on a log */ } };
 
 // Judge a batch in one call. Returns { map: id -> {dscr,breach}, cost }, or
 // { map: null } to signal the caller should fall back to the local read.
@@ -105,6 +109,7 @@ export async function runPortfolio(db, env, opts = {}) {
   const total = db.all().length;
   const t0 = Date.now();
   let totalCost = 0;
+  flog(`LIVE scan starting · model ${model} · ${total} deals`);
 
   const counts = () => {
     const c = { queued: 0, scanning: 0, clear: 0, breach: 0, error: 0 };
@@ -168,14 +173,18 @@ export async function runPortfolio(db, env, opts = {}) {
   // a deal stuck in "scanning"). REAL when the model read it; SYNTHETIC on the
   // deterministic local fallback; error only on an unexpected per-deal failure.
   const worker = async (batch) => {
-    let map = null;
+    const wt = Date.now();
+    flog(`worker → POST ${model} · ${batch.length} deals · firing`);
+    let map = null, cost = 0;
     try {
       const r = await judgeBatch(batch, model, env);
       map = r.map;
+      cost = r.cost;
       totalCost += r.cost;
     } catch {
       map = null;
     }
+    flog(`  ← ${map ? "REAL" : "SYNTHETIC(fallback)"} · ${batch.length} deals · $${cost.toFixed(6)} · ${Date.now() - wt}ms`);
     for (const d of batch) {
       try {
         const r = map ? map.get(d.id) : null;
@@ -224,6 +233,8 @@ export async function runPortfolio(db, env, opts = {}) {
       }
     }
   } finally {
+    const fc = counts();
+    flog(`done · ${fc.clear + fc.breach} judged · ${fc.breach} breaches · $${totalCost.toFixed(6)} · ${((Date.now() - t0) / 1000).toFixed(1)}s`);
     db.coordinator.running = false;
     emitTick(0);
     db.coordinator.running = false; // emitTick re-sets running:true; keep it false
