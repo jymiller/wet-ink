@@ -5,6 +5,8 @@ Not *"can the model read the PDF?"* — *"did anyone catch the breach, and get t
 
 Built for the Last Mile Agent Hackathon (July 21, 2026, SF). A working demo of [Enid](https://enidpa.com).
 
+![Wet Ink portfolio watch — 100 deals under covenant watch; breaches surfaced and routed to a human by channel (phone / SMS / WhatsApp) via ActionLayer](docs/fleet.png)
+
 ---
 
 ## The premise
@@ -27,6 +29,14 @@ A bank signs a loan, the ink dries, and the loan officer moves on to the next de
 1. **The book** (`/fleet`) — hit *Simulate Scan*; the grid fills, breaches turn red, each routed to a human by channel.
 2. **The hero deal** (`/`) — *Run Loop*: real OCR reads the cert, recomputes **1.33×**, the gate **denies** `serve_notice`, and the agent phones the loan officer.
 3. **Attest & serve** — a human signs off; the notice is served and the proof panel shows **dashboard 1.50× green vs. paper 1.33× breach**.
+
+**The gate — the agent is denied, and calls a human.** Real OCR read the cert, recompute found **1.33×** against a **1.40×** floor, `serve_notice` was **denied 403**, and the agent placed a real Novita voice call to the loan officer.
+
+![Cockpit at the gate — breach caught, serve_notice denied, real Novita TTS escalation call to the loan officer](docs/cockpit-gate.png)
+
+**The proof — after attestation, the notice is served.** The same action runs under the human's identity; the notice goes out as a real fax via ActionLayer, on a hash-chained audit trail.
+
+![Cockpit proof panel — notice served, dashboard said 1.50× green vs. paper 1.33× breach](docs/cockpit-proof.png)
 
 ## Honesty is a feature, not a disclaimer
 
