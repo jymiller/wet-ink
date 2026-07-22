@@ -5,7 +5,7 @@ Not *"can the model read the PDF?"* — *"did anyone catch the breach, and get t
 
 Built for the Last Mile Agent Hackathon (July 21, 2026, SF). A working demo of [Enid](https://enidpa.com).
 
-![Wet Ink portfolio watch — 100 deals under covenant watch; breaches surfaced and routed to a human by channel (phone / SMS / WhatsApp) via ActionLayer](docs/fleet.png)
+![Wet Ink portfolio watch — 100 deals under covenant watch; breaches surfaced and flagged for the desk, with the priority deal escalated by phone in the cockpit](docs/fleet.png)
 
 ---
 
@@ -20,7 +20,7 @@ A bank signs a loan, the ink dries, and the loan officer moves on to the next de
 - **Watches the portfolio.** 100 deals under continuous covenant watch; each incoming cert is read and scored (`/fleet`).
 - **Reads the paper.** OCR pulls the numbers off the actual cert — including restated line items the lender's baseline doesn't expect — and recomputes coverage. In the demo, the cert says **1.33×** against a **1.40×** floor while the dashboard still shows a green **1.50×** on pre-restatement earnings.
 - **Holds the line on authority.** The agent can *flag* a breach, but a policy gate **denies** it the ability to serve formal notice. It holds the determination and escalates.
-- **Reaches a human, on the right channel.** A phone call in the agent's own voice for the priority deal; SMS and WhatsApp for the rest of the book.
+- **Reaches a human.** The priority deal escalates with a phone call in the agent's own voice; every other breach is flagged for an officer to action.
 - **Serves the notice — after a signature.** Once a human attests, the same action runs under *their* identity and the formal notice goes out a real-world channel.
 - **Proves it.** Every action lands on a hash-chained audit trail, and every panel is labeled **REAL / PRERUN / SYNTHETIC**.
 
@@ -29,7 +29,7 @@ A bank signs a loan, the ink dries, and the loan officer moves on to the next de
 **1 · The premise** — after the ink dries, nobody watches. Wet Ink stays on the whole book.
 ![Act 1 — the premise](docs/story-1-premise.png)
 
-**2 · The book** — 100 deals under covenant watch; certs stream in, breaches surface, each routed to a human by channel.
+**2 · The book** — 100 deals under covenant watch; certs stream in, breaches surface, each flagged for the desk; the priority deal escalates by phone.
 ![Act 2 — the monitoring dashboard](docs/story-2-book.png)
 
 **3 · The read** — open a flagged deal: real OCR reads the cert and recomputes what the dashboard got wrong (1.33× vs a 1.40× floor).
@@ -38,12 +38,12 @@ A bank signs a loan, the ink dries, and the loan officer moves on to the next de
 **4 · The gate** — numbers pass, threshold passes, authority is denied; the agent holds the determination and phones a human.
 ![Act 4 — the gate](docs/story-4-gate.png)
 
-**5 · The fan-out** — the priority deal gets a call; the rest get SMS & WhatsApp — every escalation through ActionLayer. Close on the book.
-![Act 5 — multi-channel fan-out and proof](docs/story-5-proof.png)
+**5 · The proof** — one deal resolved end to end: the real Novita call and the pre-run FaxZero notice served via ActionLayer, beside the delta the dashboard hid.
+![Act 5 — the proof: real call, pre-run fax via ActionLayer, and the dashboard-vs-paper delta](docs/story-5-proof.png)
 
 ## The demo (≈2 min)
 
-1. **The book** (`/fleet`) — hit *Simulate Scan*; the grid fills, breaches turn red, each routed to a human by channel.
+1. **The book** (`/fleet`) — hit *Simulate Scan*; the grid fills, breaches turn red, each flagged for an officer; the priority deal drills into the cockpit.
 2. **The hero deal** (`/`) — *Run Loop*: real OCR reads the cert, recomputes **1.33×**, the gate **denies** `serve_notice`, and the agent phones the loan officer.
 3. **Attest & serve** — a human signs off; the notice is served and the proof panel shows **dashboard 1.50× green vs. paper 1.33× breach**.
 
@@ -62,7 +62,7 @@ The borrowers are fictional. The certs, the OCR, the math, and the phone call ar
 ## Integrations (both load-bearing)
 
 - **Novita** — DeepSeek-OCR reads the compliance certs; a reasoning model drives the agent loop and the semantic diff between cert and covenant (no hardcoded string matching); Novita TTS generates the escalation call live, in the agent's own voice, from real run data.
-- **ActionLayer** — the real-world execution rail that finishes the job off-screen: serving the formal breach notice through a third party, and delivering the SMS / WhatsApp escalations that reach the responsible human.
+- **ActionLayer** — the real-world execution rail that finishes the job off-screen: it drives a real browser session to serve the formal breach notice through a third-party fax service (FaxZero). Shown **PRERUN** in the demo — a real send captured ahead of time, surfaced in the cockpit after attestation.
 
 ## Run it
 

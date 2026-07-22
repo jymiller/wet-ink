@@ -64,7 +64,7 @@
   .att .empty,.emptyx{color:var(--ink-dim);font-size:12px;padding:14px 4px;line-height:1.5}
 
   .chan{font-size:9.5px;letter-spacing:.05em;padding:3px 9px;border-radius:999px;border:1px solid;display:inline-flex;align-items:center;gap:5px;white-space:nowrap}
-  .chan.phone{color:var(--amber);border-color:#6b5310} .chan.sms{color:var(--synth);border-color:#2b5580} .chan.wa{color:var(--wa);border-color:#1f6b45}
+  .chan.phone{color:var(--amber);border-color:#6b5310} .chan.flag{color:var(--ink-dim);border-color:var(--hair)}
 
   /* side rail */
   .grp{padding:14px 16px;border-bottom:1px solid var(--hair)}
@@ -104,7 +104,7 @@
     <div class="kpi"><div class="n" id="k_scanned">0/100</div><div class="c">certs scanned</div></div>
     <div class="kpi"><div class="n g" id="k_clear">0</div><div class="c">covenants clear</div></div>
     <div class="kpi"><div class="n b" id="k_breach">0</div><div class="c">breaches caught</div></div>
-    <div class="kpi"><div class="n a" id="k_notify">0</div><div class="c">humans to notify</div></div>
+    <div class="kpi"><div class="n a" id="k_notify">0</div><div class="c">flagged for review</div></div>
     <div class="kpi"><div class="n g" id="k_thru">0</div><div class="c">deals/sec</div></div>
     <div class="kpi"><div class="n" id="k_elapsed">0.0s</div><div class="c">elapsed</div></div>
     <div class="kpi"><div class="n" id="k_cost">$0.00</div><div class="c">novita spend</div></div>
@@ -122,8 +122,8 @@
         <span><i style="background:var(--synth)"></i>error</span>
         <span style="opacity:.4"><i style="background:#141d18"></i>cert not yet in</span>
       </div>
-      <div class="sec-h">Needs attention — covenant breaches<span class="sub">routed to a human, on the right channel</span></div>
-      <div id="breachList"><div class="empty">No breaches yet — run a scan to watch the book fill. Breaches surface here, each routed to a human.</div></div>
+      <div class="sec-h">Needs attention — covenant breaches<span class="sub">flagged for the desk · the priority deal escalates in the cockpit</span></div>
+      <div id="breachList"><div class="empty">No breaches yet — run a scan to watch the book fill. Breaches surface here, flagged for an officer.</div></div>
     </div>
 
     <div class="side">
@@ -135,8 +135,8 @@
         <a class="cockpit" href="/">▸ open the hero deal in the cockpit</a>
       </div>
       <div class="grp">
-        <h3><span>Escalations · outbound</span><span class="via">via ActionLayer</span></h3>
-        <div id="escList"><div class="emptyx">Escalations appear as breaches are found — phone for the hero, SMS &amp; WhatsApp for the rest.</div></div>
+        <h3><span>Breaches · flagged</span><span class="via">needs a human</span></h3>
+        <div id="escList"><div class="emptyx">Breaches surface here, flagged for an officer. The priority deal escalates by phone in the cockpit.</div></div>
       </div>
       <div class="grp flex">
         <h3>Activity</h3>
@@ -154,18 +154,15 @@
   const grid=$("grid"); const cells=[];
   for(let i=0;i<100;i++){const c=document.createElement("div");c.className="cell";grid.appendChild(c);cells.push(c);}
 
-  // channel routing: first breach in the book → phone (the hero call); rest alternate SMS / WhatsApp
-  const CH={phone:{g:"📞",label:"📞 phone call",cls:"phone",role:"loan officer — hero call"},
-            sms:{g:"💬",label:"💬 SMS",cls:"sms",role:"relationship manager"},
-            wa:{g:"◍",label:"◍ WhatsApp",cls:"wa",role:"credit officer"}};
-  const channelFor=(order)=> order===0?CH.phone : (order%2===1?CH.sms:CH.wa);
+  // the fleet detects + flags; the priority deal (first breach) escalates by phone in the hero cockpit.
+  // No auto-send channels are wired here — breaches are surfaced for an officer to action.
 
   // honesty legend reflects how the numbers were produced
   let scanMode=null; // 'REAL' (live Novita) | 'SYNTHETIC' (sim) | null
-  function litLegend(hasBreaches){
+  function litLegend(){
     $("lgReal").classList.toggle("on",scanMode==="REAL");
     $("lgSynth").classList.toggle("on",scanMode==="SYNTHETIC");
-    $("lgPrerun").classList.toggle("on",!!hasBreaches); // escalation sends are pre-run until ActionLayer is wired live
+    $("lgPrerun").classList.remove("on"); // no pre-run sends happen on the fleet
   }
 
   let deals=[];
@@ -196,29 +193,28 @@
       else if(scannedDeals.some(d=>/synth/i.test(d.note||""))) scanMode="SYNTHETIC";
     }
 
-    // breaches → needs-attention + escalations, routed by channel
+    // breaches → flagged for the desk; the first breach is the priority deal (real escalation in the cockpit)
     const breaches=deals.map((d,i)=>({d,i})).filter(x=>x.d.status==="breach");
-    litLegend(breaches.length>0);
+    litLegend();
 
     $("breachList").innerHTML = breaches.length ? breaches.map((x,order)=>{
-      const ch=channelFor(order);
+      const hero=order===0;
       return `<div class="att">
         <span class="st breach"><span class="dot"></span>BREACH</span>
         <span class="dl">${esc(x.d.id)} · <b>${esc(x.d.borrower||x.d.sector||"")}</b></span>
         <span class="mv">DSCR <b>${x.d.dscr??"—"}</b> <span class="fl">/ ${x.d.threshold} floor</span></span>
-        <span class="chan ${ch.cls}">${ch.label}</span>
+        <span class="chan ${hero?"phone":"flag"}">${hero?"📞 escalated → cockpit":"flagged · needs officer"}</span>
       </div>`;
-    }).join("") : `<div class="empty">No breaches yet — run a scan to watch the book fill. Breaches surface here, each routed to a human.</div>`;
+    }).join("") : `<div class="empty">No breaches yet — run a scan to watch the book fill. Breaches surface here, flagged for an officer.</div>`;
 
-    $("escList").innerHTML = breaches.length ? breaches.slice(0,6).map((x,order)=>{
-      const ch=channelFor(order),hero=order===0;
+    $("escList").innerHTML = breaches.length ? (() => {
+      const h=breaches[0], rest=breaches.length-1;
       return `<div class="esc">
-        <span class="chan ${ch.cls}">${ch.g}</span>
-        <span class="who">${esc(x.d.id)} · ${esc(x.d.borrower||"")}<b>${ch.role}</b></span>
-        <span class="stt"><span class="m ${hero?"real":"prerun"}">${hero?"REAL":"PRERUN"}</span><span>${hero?"→ cockpit":"via ActionLayer"}</span></span>
-      </div>`;
-    }).join("")+(breaches.length>6?`<div class="emptyx" style="padding:8px 0 0">+ ${breaches.length-6} more breaches routed…</div>`:"")
-      : `<div class="emptyx">Escalations appear as breaches are found — phone for the hero, SMS &amp; WhatsApp for the rest.</div>`;
+        <span class="chan phone">📞</span>
+        <span class="who">${esc(h.d.id)} · ${esc(h.d.borrower||"")}<b>priority deal — real escalation</b></span>
+        <span class="stt"><span class="m real">REAL</span><span>call → cockpit</span></span>
+      </div>`+(rest>0?`<div class="emptyx" style="padding:10px 0 0">+ ${rest} more breach${rest>1?"es":""} flagged for an officer to action.</div>`:"");
+    })() : `<div class="emptyx">Breaches surface here, flagged for an officer. The priority deal escalates by phone in the cockpit.</div>`;
   }
 
   async function poll(){
@@ -228,8 +224,8 @@
   setInterval(poll,500); poll();
 
   async function post(url){const r=await fetch(url,{method:"POST"});return r.json();}
-  $("b_sim").onclick=async()=>{scanMode="SYNTHETIC";litLegend(false);log('<b>SIMULATE</b> — reading the book, offline &amp; paced, zero cost…');const r=await post("/api/scan?sim=1");log("  &rarr; "+esc(JSON.stringify(r)));};
-  $("b_live").onclick=async()=>{if(!confirm("LIVE scan fires real Novita calls (spends the voucher). Proceed?"))return;scanMode="REAL";litLegend(false);log('<b>LIVE</b> — real Novita reading the certs…',"w");const r=await post("/api/scan");log("  &rarr; "+esc(JSON.stringify(r)));};
+  $("b_sim").onclick=async()=>{scanMode="SYNTHETIC";litLegend();log('<b>SIMULATE</b> — reading the book, offline &amp; paced, zero cost…');const r=await post("/api/scan?sim=1");log("  &rarr; "+esc(JSON.stringify(r)));};
+  $("b_live").onclick=async()=>{if(!confirm("LIVE scan fires real Novita calls (spends the voucher). Proceed?"))return;scanMode="REAL";litLegend();log('<b>LIVE</b> — real Novita reading the certs…',"w");const r=await post("/api/scan");log("  &rarr; "+esc(JSON.stringify(r)));};
   $("b_reset").onclick=async()=>{scanMode=null;const r=await post("/api/reset");log("reset &rarr; book re-queued");render({deals:[],stats:{},coordinator:{}});};
 </script>
 </body></html>

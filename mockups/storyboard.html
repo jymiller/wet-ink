@@ -239,7 +239,7 @@
       <div class="wm">WET&nbsp;INK</div>
       <div class="rule"></div>
       <div class="q">Not <i>“can the model read the PDF?”</i><br>— <b>“did anyone catch the breach, and get the lender legally noticed?”</b></div>
-      <div class="who">the borrowers are fictional · the certs, the OCR, the math, the call &amp; the messages are real</div>
+      <div class="who">the borrowers are fictional · the certs, the OCR, the math, the call &amp; the fax are real</div>
     </div>
   </div>
   <div class="cap"><span class="act">Act 1</span><span class="txt"><b>The premise.</b> After signing, nobody watches. Wet Ink is the watcher that stays on the whole book.</span></div>
@@ -260,7 +260,7 @@
         <div class="kpi"><div class="n good">91</div><div class="c">covenants clear</div></div>
         <div class="kpi"><div class="n watch">6</div><div class="c">on watch</div></div>
         <div class="kpi"><div class="n breach">3</div><div class="c">breaches caught</div></div>
-        <div class="kpi"><div class="n">3</div><div class="c">humans notified</div></div>
+        <div class="kpi"><div class="n">3</div><div class="c">flagged for review</div></div>
       </div>
       <div class="body">
         <div class="board">
@@ -269,8 +269,8 @@
             <thead><tr><th>Status</th><th>Deal</th><th>Borrower</th><th>Covenant</th><th>Latest cert</th><th class="r">Measured</th><th class="r">Escalation</th></tr></thead>
             <tbody>
               <tr class="br"><td><span class="st breach"><span class="dot"></span>BREACH</span></td><td>NW-1</td><td class="b">Northwind Provisions</td><td>ICR ≥ 1.40×</td><td>Q3 restated</td><td class="r meas bad">1.33×</td><td class="r"><span class="chan phone">📞 phone call</span></td></tr>
-              <tr class="br"><td><span class="st breach"><span class="dot"></span>BREACH</span></td><td>MER-4</td><td class="b">Meridian Freight</td><td>DSCR ≥ 1.25×</td><td>Q3</td><td class="r meas bad">1.19×</td><td class="r"><span class="chan sms">💬 SMS</span></td></tr>
-              <tr class="br"><td><span class="st breach"><span class="dot"></span>BREACH</span></td><td>PAC-7</td><td class="b">Pacific Yard Svcs</td><td>DSCR ≥ 1.20×</td><td>Q3</td><td class="r meas bad">1.08×</td><td class="r"><span class="chan wa">◍ WhatsApp</span></td></tr>
+              <tr class="br"><td><span class="st breach"><span class="dot"></span>BREACH</span></td><td>MER-4</td><td class="b">Meridian Freight</td><td>DSCR ≥ 1.25×</td><td>Q3</td><td class="r meas bad">1.19×</td><td class="r"><span class="chan none">flagged</span></td></tr>
+              <tr class="br"><td><span class="st breach"><span class="dot"></span>BREACH</span></td><td>PAC-7</td><td class="b">Pacific Yard Svcs</td><td>DSCR ≥ 1.20×</td><td>Q3</td><td class="r meas bad">1.08×</td><td class="r"><span class="chan none">flagged</span></td></tr>
               <tr><td><span class="st watch"><span class="dot"></span>WATCH</span></td><td>CAL-2</td><td class="b">Calloway Foods</td><td>ICR ≥ 1.35×</td><td>Q3</td><td class="r meas warn">1.41×</td><td class="r"><span class="chan none">monitor</span></td></tr>
               <tr><td><span class="st watch"><span class="dot"></span>WATCH</span></td><td>HAR-9</td><td class="b">Harbor Cold Chain</td><td>DSCR ≥ 1.30×</td><td>Q2 · overdue 6d</td><td class="r meas warn">—</td><td class="r"><span class="chan none">chase cert</span></td></tr>
               <tr><td><span class="st clear"><span class="dot"></span>CLEAR</span></td><td>BRT-1</td><td class="b">Brightline Mfg</td><td>ICR ≥ 1.25×</td><td>Q3</td><td class="r meas ok">1.72×</td><td class="r"><span class="chan none">—</span></td></tr>
@@ -291,18 +291,18 @@
             </div>
           </div>
           <div class="sec">
-            <div class="lab"><span>Escalations · outbound</span><span class="via">via ActionLayer</span></div>
+            <div class="lab"><span>Breaches · flagged</span><span class="via">needs a human</span></div>
             <div>
-              <div class="esc"><span class="chan phone">📞</span><span class="who">NW-1 · Northwind<b>loan officer — the hero call</b></span><span class="stt"><span class="m real">REAL</span><span>answered</span></span></div>
-              <div class="esc"><span class="chan sms">💬</span><span class="who">MER-4 · Meridian<b>relationship manager</b></span><span class="stt"><span class="m prerun">PRERUN</span><span>delivered</span></span></div>
-              <div class="esc"><span class="chan wa">◍</span><span class="who">PAC-7 · Pacific Yard<b>credit officer</b></span><span class="stt"><span class="m prerun">PRERUN</span><span>delivered</span></span></div>
+              <div class="esc"><span class="chan phone">📞</span><span class="who">NW-1 · Northwind<b>priority deal — real escalation</b></span><span class="stt"><span class="m real">REAL</span><span>call → cockpit</span></span></div>
+              <div class="esc"><span class="chan none">•</span><span class="who">MER-4 · Meridian<b>flagged for an officer</b></span><span class="stt"><span>needs review</span></span></div>
+              <div class="esc"><span class="chan none">•</span><span class="who">PAC-7 · Pacific Yard<b>flagged for an officer</b></span><span class="stt"><span>needs review</span></span></div>
             </div>
           </div>
         </div>
       </div>
     </div>
   </div>
-  <div class="cap"><span class="act">Act 2</span><span class="txt"><b>The monitoring dashboard.</b> 100 deals watched, certs streaming in, the 3 breaches surfaced — each routed to a human on the right channel.</span></div>
+  <div class="cap"><span class="act">Act 2</span><span class="txt"><b>The monitoring dashboard.</b> 100 deals watched, certs streaming in, the 3 breaches surfaced — flagged for the desk; the priority deal escalates by phone.</span></div>
 
   <!-- ================= ACT 3 — THE DRILL-DOWN / READ ================= -->
   <div class="frame">
@@ -419,22 +419,17 @@
   <!-- ================= ACT 5 — FAN-OUT (multi-channel) + PROOF ================= -->
   <div class="frame">
     <div class="a5 scan">
-      <div class="kick">REACH THE RIGHT HUMAN, ON THE RIGHT CHANNEL <span class="via">— phone · SMS · WhatsApp, all executed <b>via ActionLayer</b></span></div>
-      <div class="fan">
+      <div class="kick">THE PROOF <span class="via">— one deal, resolved end to end · <b>real call, real (pre-run) fax, measured</b></span></div>
+      <div class="fan" style="grid-template-columns:repeat(2,1fr);max-width:920px;margin:auto">
         <div class="ch phone">
-          <div class="ch-h"><span class="name">📞 Phone call</span><span class="deal">NW-1 · the hero</span></div>
+          <div class="ch-h"><span class="name">📞 The call</span><span class="deal">NW-1 · loan officer</span></div>
           <div class="bubble"><div class="snd">Wet Ink → loan officer</div>“…coverage came in at 1.33, below the 1.40 floor. I'm holding the determination and I need your attestation to serve notice.”</div>
           <div class="ch-f"><span class="al">Novita TTS · live call</span><span class="m real">REAL · answered</span></div>
         </div>
-        <div class="ch sms">
-          <div class="ch-h"><span class="name">💬 SMS</span><span class="deal">MER-4 · Meridian</span></div>
-          <div class="bubble"><div class="snd">Wet Ink → relationship mgr</div>WET INK · MER-4 breach: DSCR 1.19× vs 1.25× floor on the Q3 cert. Reply ATTEST to authorize formal notice, or OPEN to review.</div>
-          <div class="ch-f"><span class="al">ActionLayer · SMS</span><span class="m prerun">PRERUN · delivered</span></div>
-        </div>
-        <div class="ch wa">
-          <div class="ch-h"><span class="name">◍ WhatsApp</span><span class="deal">PAC-7 · Pacific Yard</span></div>
-          <div class="bubble"><div class="snd">Wet Ink → credit officer</div>⚠ PAC-7 covenant breach — DSCR 1.08× vs 1.20× floor (Q3). Determination held for your attestation. Tap to open the deal cockpit.</div>
-          <div class="ch-f"><span class="al">ActionLayer · WhatsApp</span><span class="m prerun">PRERUN · delivered</span></div>
+        <div class="ch phone">
+          <div class="ch-h"><span class="name">📠 The notice</span><span class="deal">NW-1 · served</span></div>
+          <div class="bubble"><div class="snd">Wet Ink → borrower of record</div>Formal notice of covenant breach — ICR 1.33× vs the 1.40× floor (Q3 restated cert). Served only after the loan officer's attestation.</div>
+          <div class="ch-f"><span class="al">FaxZero · via ActionLayer</span><span class="m prerun">PRERUN · sent ahead</span></div>
         </div>
       </div>
       <div class="proofstrip">
@@ -446,14 +441,14 @@
         <div style="width:1px;height:44px;background:var(--hair)"></div>
         <div class="foot">
           <span><span class="fv">100</span><span class="fk">deals watched</span></span>
-          <span><span class="fv">3</span><span class="fk">breaches caught</span></span>
-          <span><span class="fv">3</span><span class="fk">humans reached · 3 channels</span></span>
+          <span><span class="fv">3</span><span class="fk">breaches flagged</span></span>
+          <span><span class="fv">1</span><span class="fk">human reached · real call</span></span>
           <span><span class="fv">1</span><span class="fk">notice served · FaxZero</span></span>
           <span class="enid">watched the book · caught the breach · reached a human · served the notice. That's Enid.</span>
         </div>
       </div>
     </div>
   </div>
-  <div class="cap"><span class="act">Act 5</span><span class="txt"><b>The fan-out + proof.</b> The hero gets a call; the rest get SMS &amp; WhatsApp — every escalation executed through ActionLayer. Close on the book, not a feature.</span></div>
+  <div class="cap"><span class="act">Act 5</span><span class="txt"><b>The proof.</b> One deal resolved end to end — the real call, the pre-run fax notice via ActionLayer, and the delta the dashboard hid. Close on the book.</span></div>
 </body>
 </html>
