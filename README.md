@@ -24,6 +24,23 @@ A bank signs a loan, the ink dries, and the loan officer moves on to the next de
 - **Serves the notice — after a signature.** Once a human attests, the same action runs under *their* identity and the formal notice goes out a real-world channel.
 - **Proves it.** Every action lands on a hash-chained audit trail, and every panel is labeled **REAL / PRERUN / SYNTHETIC**.
 
+## The story, act by act
+
+**1 · The premise** — after the ink dries, nobody watches. Wet Ink stays on the whole book.
+![Act 1 — the premise](docs/story-1-premise.png)
+
+**2 · The book** — 100 deals under covenant watch; certs stream in, breaches surface, each routed to a human by channel.
+![Act 2 — the monitoring dashboard](docs/story-2-book.png)
+
+**3 · The read** — open a flagged deal: real OCR reads the cert and recomputes what the dashboard got wrong (1.33× vs a 1.40× floor).
+![Act 3 — reading the cert](docs/story-3-read.png)
+
+**4 · The gate** — numbers pass, threshold passes, authority is denied; the agent holds the determination and phones a human.
+![Act 4 — the gate](docs/story-4-gate.png)
+
+**5 · The fan-out** — the priority deal gets a call; the rest get SMS & WhatsApp — every escalation through ActionLayer. Close on the book.
+![Act 5 — multi-channel fan-out and proof](docs/story-5-proof.png)
+
 ## The demo (≈2 min)
 
 1. **The book** (`/fleet`) — hit *Simulate Scan*; the grid fills, breaches turn red, each routed to a human by channel.
